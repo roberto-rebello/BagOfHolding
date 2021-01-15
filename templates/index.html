@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Bag Of Holding</h1>
+
+    {% if items|length < 1 %}
+    <h4>Such Empty...</h4>
+    <img src="{{ url_for('static', filename='img/tumbleweed.gif') }}" alt="Tumbleweed">
+    {% else %}
+    <table>
+        <tr>
+            <th>name</th>
+            <th>description</th>
+            <th>price</th>
+            <th>weigth</th>
+            <th>quantity</th>
+            <th>type</th>
+            <th>Magic Item</th>
+            <th>Actions</th>
+        </tr>
+        {% for item in items %}
+            <tr>
+                {% if item._href == "" %}
+                <td>{{ item._name}}</td>
+                {% else %}
+                <td><a href="{{ item._href }}" target="_blank" rel="external noreferrer nofollow noopener">{{ item._name}}</a></td>
+                {% endif %}
+                <td>{{ item._description }}</td>
+                <td>{{ item._price }}</td>
+                <td>{{ item._weigth }}</td>
+                <td>{{ item._quantity }}</td>
+                <td>{{ item._type }}</td>
+                <td>{{ item._isMagic }}</td>
+                <td>
+                    <a href="/delete/{{item._id}}">Delete</a>
+                    <br>
+                    <a href="/update/{{item._id}}">Update</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    {% endif %}
+
+    <form action="/add" >
+        <input type="submit" name="add" value="Add Item">
+    </form>
+</div>
+{% endblock %}
