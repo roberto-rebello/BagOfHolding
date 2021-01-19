@@ -4,20 +4,20 @@
 {% endblock %}
 
 {% block body %}
-<div class="content">
+<div>
     <h1>Add an Item</h1>
 
-    <form  action="/" method="POST">
+    <form class="add" action="/" method="POST">
         <label for="name">Name: </label>
         <input type="text" name="name" id="name" placeholder="Item name" required><br>
         <label for="name">Description: </label>
         <input type="text" name="description" id="description" placeholder="Item description (optional)"><br>
         <label for="name">Price: </label>
-        <input type="number" name="price" id="price" placeholder="0" min="0"><br>
+        <input type="number" name="price" id="price" value="0" min="0"><br>
         <label for="name">Weigth: </label>
-        <input type="number" name="weigth" id="weigth" placeholder="0" min="0"><br>
+        <input type="number" name="weigth" id="weigth" value="0" min="0"><br>
         <label for="name">Quantity: </label>
-        <input type="number" name="quantity" id="quantity" placeholder="1" min="1"><br>
+        <input type="number" name="quantity" id="quantity" value="1" min="1"><br>
         <label for="name">Type: </label>
         <select name="type">
             <option value="Weapon" selected>Weapon</option>
@@ -30,11 +30,13 @@
             <option value="Misc">Misc</option>
         </select><br>
         <label for="name">Magic Item: </label>
-        <input type="checkbox" name="isMagic" id="isMagic" value="Yes"><br>
+        <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes"><br>
         <input type="hidden" name="isMagic" id="isMagic" value="No">
         <label for="name">External link: </label>
         <input type="text" name="href" id="href" placeholder="Item href"><br>
-        <input type="submit" value="Add Item"><br>
+        <div class="add center" style="text-align: center">
+            <input type="submit" value="Add Item"><br>
+        </div>
     </form>
 </div>
 {% endblock %}
