@@ -7,12 +7,18 @@
 <div class="content">
     <h1>Update Item</h1>
 
-    <form  action="/update/{{ item._id }}" method="POST">
-        <input type="text" name="name" id="name" value="{{ item._name }}">
-        <input type="text" name="description" id="description" value="{{ item._description }}">
-        <input type="number" name="price" id="price" value="{{ item._price }}" min="0">
-        <input type="number" name="weigth" id="weigth" value="{{ item._weigth }}" min="0">
-        <input type="number" name="quantity" id="quantity" value="{{ item._quantity }}" min="1">
+    <form class="update" action="/update/{{ item._id }}" method="POST">
+        <label for="name">Name: </label>
+        <input type="text" name="name" id="name" value="{{ item._name }}"><br>
+        <label for="name">Description: </label>
+        <input type="text" name="description" id="description" value="{{ item._description }}"><br>
+        <label for="name">Price: </label>
+        <input type="number" name="price" id="price" value="{{ item._price }}" min="0"><br>
+        <label for="name">Weigth: </label>
+        <input type="number" name="weigth" id="weigth" value="{{ item._weigth }}" min="0"><br>
+        <label for="name">Quantity: </label>
+        <input type="number" name="quantity" id="quantity" value="{{ item._quantity }}" min="1"><br>
+        <label for="name">Type: </label>
         <select name="type">
             <option value="Weapon" selected>Weapon</option>
             <option value="Armor">Armor</option>
@@ -22,11 +28,13 @@
             <option value="Wand">Wand</option>
             <option value="Quest Item">Quest Item</option>
             <option value="Misc">Misc</option>
-        </select>
-        <input type="checkbox" name="isMagic" id="isMagic" value="Yes">
+        </select><br>
+        <label for="name">Magic Item: </label>
+        <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes"><br>
         <input type="hidden" name="isMagic" id="isMagic" value="No">
-        <input type="text" name="href" id="href" value="{{ item._href }}">
-        <input type="submit" value="Update">
+        <label for="name">External link: </label>
+        <input type="text" name="href" id="href" value="{{ item._href }}"><br>
+        <input type="submit" value="Update"><br>
     </form>
 </div>
 {% endblock %}

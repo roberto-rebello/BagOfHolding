@@ -4,21 +4,29 @@
 {% endblock %}
 
 {% block body %}
-<div class="content">
+<div class="">
+</div>
+
+<div class="">
     <h1>Bag Of Holding</h1>
+
+    <form action="/create" >
+        <input type="submit" name="create" value="Add Item">
+    </form>
+    <br>
 
     {% if items|length < 1 %}
     <h4>Such Empty...</h4>
     <img src="{{ url_for('static', filename='img/tumbleweed.gif') }}" alt="Tumbleweed">
     {% else %}
     <table>
-        <tr>
-            <th>name</th>
-            <th>description</th>
-            <th>price</th>
-            <th>weigth</th>
-            <th>quantity</th>
-            <th>type</th>
+        <tr class="noHover">
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Weigth</th>
+            <th>Quantity</th>
+            <th>Type</th>
             <th>Magic Item</th>
             <th>Actions</th>
         </tr>
@@ -32,22 +40,34 @@
                 <td>{{ item._description }}</td>
                 <td>{{ item._price }}</td>
                 <td>{{ item._weigth }}</td>
-                <td>{{ item._quantity }}</td>
+                <td>
+                    <div class="row">
+                        <div class="col-5 center">
+                            {{ item._quantity }}
+                        </div>
+                        <div class="col-5">
+                            <div class="col-5 center">
+                                <a href="/add/{{item._id}}"><i class='fas fa-plus' style='font-size:12px'></i></a>
+                            </div>
+                            <div class="col-5 center">
+                                <a href="/subtract/{{item._id}}"><i class='fas fa-minus' style='font-size:12px'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
                 <td>{{ item._type }}</td>
                 <td>{{ item._isMagic }}</td>
                 <td>
-                    <a href="/delete/{{item._id}}">Delete</a>
-                    <br>
-                    <a href="/update/{{item._id}}">Update</a>
+                    <!-- <a href="/update/{{item._id}}">Update</a> -->
+                    <a href="/update/{{item._id}}"><i class='far fa-edit'></i></a>
+                    <!-- <a href="/copy/{{item._id}}">Copy</a> -->
+                    <a href="/copy/{{item._id}}"><i class='far fa-copy'></i></a>
+                    <!-- <a href="/delete/{{item._id}}">Delete</a> -->
+                    <a href="/delete/{{item._id}}"><i class='fa fa-trash'></i></a>
                 </td>
             </tr>
         {% endfor %}
     </table>
-    <br>
     {% endif %}
-
-    <form action="/add" >
-        <input type="submit" name="add" value="Add Item">
-    </form>
 </div>
 {% endblock %}
