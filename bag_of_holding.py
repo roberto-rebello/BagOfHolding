@@ -58,9 +58,9 @@ def index():
         items = Item.query.order_by(Item._name).all()
         return flask.render_template("index.html", items=items)
 
-@app.route("/add")
-def add_item():
-    return flask.render_template("add.html")
+@app.route("/create")
+def create_item():
+    return flask.render_template("create.html")
 
 @app.route("/delete/<int:id>")
 def delete_item(id):
@@ -97,6 +97,50 @@ def update_item(id):
     else:
         return flask.render_template("update.html", item=item)
 
+@app.route("/copy/<int:id>")
+def copy_item(id):
+    item = Item.query.get_or_404(id)
+    new_item = Item(item._name,
+                    item._description,
+                    item._price,
+                    item._weigth,
+                    item._quantity,
+                    item._type,
+                    item._isMagic,
+                    item._href)
+
+    try:
+        db.session.add(new_item)
+        db.session.commit()
+        return flask.redirect("/")
+
+    except Exception as e:
+        raise
+
+
+@app.route("/add/<int:id>")
+def add_item(id):
+    item = Item.query.get_or_404(id)
+
+    item._quantity += 1
+
+    try:
+        db.session.commit()
+        return flask.redirect("/")
+    except Exception as e:
+        raise
+
+@app.route("/subtract/<int:id>")
+def subtract(id):
+    item = Item.query.get_or_404(id)
+
+    item._quantity -= 1
+
+    try:
+        db.session.commit()
+        return flask.redirect("/")
+    except Exception as e:
+        raise
 
 if __name__ == '__main__':
     app.run(debug=True)
