@@ -12,6 +12,8 @@
         <input type="text" name="name" id="name" value="{{ item._name }}"><br>
         <label for="name">Description: </label>
         <input type="text" name="description" id="description" value="{{ item._description }}"><br>
+        <label for="name">Location: </label>
+        <input type="text" name="location" id="location" value="{{ item._location }}"><br>
         <label for="name">Price: </label>
         <input type="number" name="price" id="price" value="{{ item._price }}" min="0"><br>
         <label for="name">Weigth: </label>
@@ -26,11 +28,16 @@
             <option value="Potion">Potion</option>
             <option value="Scroll">Scroll</option>
             <option value="Wand">Wand</option>
+            <option value="Wondrous Item">Wondrous Item</option>
             <option value="Quest Item">Quest Item</option>
             <option value="Misc">Misc</option>
         </select><br>
         <label for="name">Magic Item: </label>
+        {% if item._isMagic == "Yes" %}
+        <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes" selected><br>
+        {% else %}
         <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes"><br>
+        {% endif %}
         <input type="hidden" name="isMagic" id="isMagic" value="No">
         <label for="name">External link: </label>
         <input type="text" name="href" id="href" value="{{ item._href }}"><br>

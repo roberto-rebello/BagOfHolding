@@ -1,15 +1,16 @@
 import flask
-import flask_sqlalchemy as sql
+from flask_sqlalchemy import SQLAlchemy
 
 app = flask.Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///bag.db'
 
-db = sql.SQLAlchemy(app)
+db = SQLAlchemy(app)
 
 class Item(db.Model):
     _id = db.Column(db.Integer, primary_key = True)
     _name = db.Column(db.String(200), nullable = False)
     _description = db.Column(db.String(500), default = "")
+    _location = db.Column(db.String(500), default = "")
     _price = db.Column(db.Integer, default = 0)
     _weigth = db.Column(db.Integer, default = 0)
     _quantity = db.Column(db.Integer, default = 1)
@@ -28,9 +29,9 @@ class Item(db.Model):
         self._href = href
 
     def __string__(self):
-        return "Item: {}\n\tID: {}\n\tDescription: {}\n\tUnit price: {}\n\tUnit weight:: {}\n\tQuantity: {}\n\tType: "\
-            "{}\n\tMagical: {}\n\thref: {}\n\t".format(self._name, str(self._id), self._description, str(self._price),
-            str(self._weigth), str(self._quantity), self._type, self._isMagic, self._href)
+        return "Item: {}\n\tID: {}\n\tDescription: {}\n\tLocation: {}\n\tUnit price: {}\n\tUnit weight:: {}\n\tQuantity:"\
+            " {}\n\tType: {}\n\tMagical: {}\n\thref: {}\n\t".format(self._name, str(self._id), self._description,
+            self._location, str(self._price), str(self._weigth), str(self._quantity), self._type, self._isMagic, self._href)
 
     def __repr__(self):
         return "<Task {}>".format(self._id)
@@ -40,6 +41,7 @@ def index():
     if flask.request.method == "POST":
         new_item = Item(flask.request.form["name"],
                         flask.request.form["description"],
+                        flask.request.form["location"],
                         flask.request.form["price"],
                         flask.request.form["weigth"],
                         flask.request.form["quantity"],
@@ -81,6 +83,7 @@ def update_item(id):
     if flask.request.method == "POST":
         item._name = flask.request.form["name"]
         item._description = flask.request.form["description"]
+        item._location = flask.request.form["location"]
         item._price = flask.request.form["price"]
         item._weigth = flask.request.form["weigth"]
         item._quantity = flask.request.form["quantity"]
@@ -102,6 +105,7 @@ def copy_item(id):
     item = Item.query.get_or_404(id)
     new_item = Item(item._name,
                     item._description,
+                    item._location,
                     item._price,
                     item._weigth,
                     item._quantity,
