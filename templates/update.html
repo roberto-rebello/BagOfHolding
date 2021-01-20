@@ -16,8 +16,8 @@
         <input type="text" name="location" id="location" value="{{ item._location }}"><br>
         <label for="name">Price: </label>
         <input type="number" name="price" id="price" value="{{ item._price }}" min="0"><br>
-        <label for="name">Weigth: </label>
-        <input type="number" name="weigth" id="weigth" value="{{ item._weigth }}" min="0"><br>
+        <label for="name">Weight: </label>
+        <input type="number" name="weight" id="weight" value="{{ item._weight }}" min="0"><br>
         <label for="name">Quantity: </label>
         <input type="number" name="quantity" id="quantity" value="{{ item._quantity }}" min="1"><br>
         <label for="name">Type: </label>
@@ -34,7 +34,7 @@
         </select><br>
         <label for="name">Magic Item: </label>
         {% if item._isMagic == "Yes" %}
-        <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes" selected><br>
+        <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes" checked><br>
         {% else %}
         <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes"><br>
         {% endif %}
