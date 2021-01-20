@@ -9,11 +9,11 @@
 
     <form class="update" action="/update/{{ item._id }}" method="POST">
         <label for="name">Name: </label>
-        <input type="text" name="name" id="name" value="{{ item._name }}"><br>
+        <input type="text" name="name" id="name" value="{{ item._name }}" required><br>
         <label for="name">Description: </label>
         <input type="text" name="description" id="description" value="{{ item._description }}"><br>
         <label for="name">Location: </label>
-        <input type="text" name="location" id="location" value="{{ item._location }}"><br>
+        <input type="text" name="location" id="location" value="{{ item._location }}" required><br>
         <label for="name">Price: </label>
         <input type="number" name="price" id="price" value="{{ item._price }}" min="0"><br>
         <label for="name">Weight: </label>
