@@ -18,10 +18,11 @@ class Item(db.Model):
     _isMagic = db.Column(db.String(3), default = "No")
     _href = db.Column(db.String(100), default = "")
 
-    def __init__(self, name, description, price, weight, quantity, type, isMagic, href, **kwargs):
+    def __init__(self, name, description, location, price, weight, quantity, type, isMagic, href, **kwargs):
         super(Item, self).__init__(**kwargs)
         self._name = name
         self._description = description
+        self._location = location
         self._price = price
         self._weight = weight
         self._quantity = quantity
@@ -29,13 +30,13 @@ class Item(db.Model):
         self._isMagic = isMagic
         self._href = href
 
-    def __string__(self):
+    def __str__(self):
         return "Item: {}\n\tID: {}\n\tDescription: {}\n\tLocation: {}\n\tUnit price: {}\n\tUnit weight:: {}\n\tQuantity:"\
-            " {}\n\tType: {}\n\tMagical: {}\n\thref: {}\n\t".format(self._name, str(self._id), self._description,
+            " {}\n\tType: {}\n\tMagical: {}\n\thref: {}\n".format(self._name, str(self._id), self._description,
             self._location, str(self._price), str(self._weight), str(self._quantity), self._type, self._isMagic, self._href)
 
     def __repr__(self):
-        return "<Task {}>".format(self._id)
+        return "<Item {}>".format(self._id)
 
 @app.route("/", methods = ["POST", "GET"])
 def index():
