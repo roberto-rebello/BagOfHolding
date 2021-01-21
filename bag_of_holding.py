@@ -59,7 +59,9 @@ def index():
             raise
     else:
         items = Item.query.order_by(Item._name).all()
-        return flask.render_template("index.html", items=items)
+        items_value = _getValue(items)
+        items_weight = _getWeight(items)
+        return flask.render_template("index.html", items=items, items_value=items_value, items_weight=items_weight)
 
 @app.route("/create")
 def create_item():
@@ -146,6 +148,20 @@ def subtract(id):
         return flask.redirect("/")
     except Exception as e:
         raise
+
+def _getValue(items):
+    total_value = 0.0
+    for item in items:
+        total_value += (item._price * item._quantity)
+
+    return round(total_value, 1)
+
+def _getWeight(items):
+    total_weight = 0.0
+    for item in items:
+        total_weight += (item._weight * item._quantity)
+
+    return round(total_weight, 1)
 
 if __name__ == '__main__':
     app.run(debug=True)

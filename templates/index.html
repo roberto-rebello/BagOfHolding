@@ -19,6 +19,17 @@
     <h4>Such Empty...</h4>
     <img src="{{ url_for('static', filename='img/tumbleweed.gif') }}" alt="Tumbleweed">
     {% else %}
+    <table class="noHover">
+        <tr>
+            <th>Items Value</th>
+            <th>Items Weight</th>
+        </tr>
+        <tr>
+            <td>{{ (items_value) }}g</td>
+            <td>{{ items_weight }} lb</td>
+        </tr>
+    </table>
+    <br>
     <table>
         <tr class="noHover">
             <th>Name</th>
