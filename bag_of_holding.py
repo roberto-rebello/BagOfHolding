@@ -11,18 +11,19 @@ class Item(db.Model):
     _name = db.Column(db.String(200), nullable = False)
     _description = db.Column(db.String(500), default = "")
     _location = db.Column(db.String(500), default = "")
-    _price = db.Column(db.Integer, default = 0)
-    _weigth = db.Column(db.Integer, default = 0)
+    _price = db.Column(db.Float, default = 0)
+    _weight = db.Column(db.Float, default = 0)
     _quantity = db.Column(db.Integer, default = 1)
     _type = db.Column(db.String(50), default = "")
     _isMagic = db.Column(db.String(3), default = "No")
     _href = db.Column(db.String(100), default = "")
 
-    def __init__(self, name, description, price, weigth, quantity, type, isMagic, href):
+    def __init__(self, name, description, price, weight, quantity, type, isMagic, href, **kwargs):
+        super(Item, self).__init__(**kwargs)
         self._name = name
         self._description = description
         self._price = price
-        self._weigth = weigth
+        self._weight = weight
         self._quantity = quantity
         self._type = type
         self._isMagic = isMagic
@@ -31,7 +32,7 @@ class Item(db.Model):
     def __string__(self):
         return "Item: {}\n\tID: {}\n\tDescription: {}\n\tLocation: {}\n\tUnit price: {}\n\tUnit weight:: {}\n\tQuantity:"\
             " {}\n\tType: {}\n\tMagical: {}\n\thref: {}\n\t".format(self._name, str(self._id), self._description,
-            self._location, str(self._price), str(self._weigth), str(self._quantity), self._type, self._isMagic, self._href)
+            self._location, str(self._price), str(self._weight), str(self._quantity), self._type, self._isMagic, self._href)
 
     def __repr__(self):
         return "<Task {}>".format(self._id)
@@ -43,7 +44,7 @@ def index():
                         flask.request.form["description"],
                         flask.request.form["location"],
                         flask.request.form["price"],
-                        flask.request.form["weigth"],
+                        flask.request.form["weight"],
                         flask.request.form["quantity"],
                         flask.request.form["type"],
                         flask.request.form["isMagic"],
@@ -85,7 +86,7 @@ def update_item(id):
         item._description = flask.request.form["description"]
         item._location = flask.request.form["location"]
         item._price = flask.request.form["price"]
-        item._weigth = flask.request.form["weigth"]
+        item._weight = flask.request.form["weight"]
         item._quantity = flask.request.form["quantity"]
         item._type = flask.request.form["type"]
         item._isMagic = flask.request.form["isMagic"]
@@ -107,7 +108,7 @@ def copy_item(id):
                     item._description,
                     item._location,
                     item._price,
-                    item._weigth,
+                    item._weight,
                     item._quantity,
                     item._type,
                     item._isMagic,
