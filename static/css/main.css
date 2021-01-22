@@ -54,7 +54,7 @@ td {
     text-align: left;
 }
 
-.add > input, .update > input {
+.add input, .update input {
     width: 100%;
 }
 
@@ -66,11 +66,9 @@ a {
     color: black;
 }
 
-.noHover{
-    pointer-events: none;
+.noHover:hover, .noHover :hover {
+    background-color: transparent;
 }
-
-
 
 /* Flexbox */
 .row {

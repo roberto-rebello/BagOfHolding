@@ -21,11 +21,16 @@
     {% else %}
     <table class="noHover">
         <tr>
+            <th>
+                Party Gold
+                <a href="/update/coin"><i class='far fa-edit'></i></a>
+            </th>
             <th>Items Value</th>
             <th>Items Weight</th>
         </tr>
         <tr>
-            <td>{{ (items_value) }}g</td>
+            <td>{{ party_gold }} g</td>
+            <td>{{ items_value }} g</td>
             <td>{{ items_weight }} lb</td>
         </tr>
     </table>
@@ -43,42 +48,42 @@
             <th>Actions</th>
         </tr>
         {% for item in items %}
-            <tr>
-                {% if item._href == "" %}
-                <td>{{ item._name}}</td>
-                {% else %}
-                <td><a href="{{ item._href }}" target="_blank" rel="external noreferrer nofollow noopener">{{ item._name}}</a></td>
-                {% endif %}
-                <td>{{ item._description }}</td>
-                <td>{{ item._location }}</td>
-                <td>{{ item._price }}</td>
-                <td>{{ item._weight }}</td>
-                <td>
-                    <div class="row">
+        <tr>
+            {% if item._href == "" %}
+            <td>{{ item._name}}</td>
+            {% else %}
+            <td><a href="{{ item._href }}" target="_blank" rel="external noreferrer nofollow noopener">{{ item._name}}</a></td>
+            {% endif %}
+            <td>{{ item._description }}</td>
+            <td>{{ item._location }}</td>
+            <td>{{ item._price }}</td>
+            <td>{{ item._weight }}</td>
+            <td>
+                <div class="row">
+                    <div class="col-5 center">
+                        {{ item._quantity }}
+                    </div>
+                    <div class="col-5">
                         <div class="col-5 center">
-                            {{ item._quantity }}
+                            <a href="/add/{{item._id}}"><i class='fas fa-plus' style='font-size:12px'></i></a>
                         </div>
-                        <div class="col-5">
-                            <div class="col-5 center">
-                                <a href="/add/{{item._id}}"><i class='fas fa-plus' style='font-size:12px'></i></a>
-                            </div>
-                            <div class="col-5 center">
-                                <a href="/subtract/{{item._id}}"><i class='fas fa-minus' style='font-size:12px'></i></a>
-                            </div>
+                        <div class="col-5 center">
+                            <a href="/subtract/{{item._id}}"><i class='fas fa-minus' style='font-size:12px'></i></a>
                         </div>
                     </div>
-                </td>
-                <td>{{ item._type }}</td>
-                <td>{{ item._isMagic }}</td>
-                <td>
-                    <!-- <a href="/update/{{item._id}}">Update</a> -->
-                    <a href="/update/{{item._id}}"><i class='far fa-edit'></i></a>
-                    <!-- <a href="/copy/{{item._id}}">Copy</a> -->
-                    <a href="/copy/{{item._id}}"><i class='far fa-copy'></i></a>
-                    <!-- <a href="/delete/{{item._id}}">Delete</a> -->
-                    <a href="/delete/{{item._id}}"><i class='fa fa-trash'></i></a>
-                </td>
-            </tr>
+                </div>
+            </td>
+            <td>{{ item._type }}</td>
+            <td>{{ item._isMagic }}</td>
+            <td>
+                <!-- <a href="/update/{{item._id}}">Update</a> -->
+                <a href="/update/{{item._id}}"><i class='far fa-edit'></i></a>
+                <!-- <a href="/copy/{{item._id}}">Copy</a> -->
+                <a href="/copy/{{item._id}}"><i class='far fa-copy'></i></a>
+                <!-- <a href="/delete/{{item._id}}">Delete</a> -->
+                <a href="/delete/{{item._id}}"><i class='fa fa-trash'></i></a>
+            </td>
+        </tr>
         {% endfor %}
     </table>
     {% endif %}

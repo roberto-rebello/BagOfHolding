@@ -81,7 +81,15 @@ def index():
         items = Item.query.order_by(Item._name).all()
         items_value = _getValue(items)
         items_weight = _getWeight(items)
-        return flask.render_template("index.html", items=items, items_value=items_value, items_weight=items_weight)
+
+        coins = Coin.query.order_by(Coin._value).all()
+        party_gold = _convertDefault(coins)
+
+        return flask.render_template("index.html",
+                                     items=items,
+                                     items_value=items_value,
+                                     items_weight=items_weight,
+                                     party_gold=party_gold)
 
 @app.route("/create")
 def create_item():
@@ -144,7 +152,6 @@ def copy_item(id):
     except Exception as e:
         raise
 
-
 @app.route("/add/<int:id>")
 def add_item(id):
     item = Item.query.get_or_404(id)
@@ -169,6 +176,24 @@ def subtract(id):
     except Exception as e:
         raise
 
+@app.route("/update/coin", methods=["GET", "POST"])
+def update_coin():
+    coins = Coin.query.order_by(Coin._value).all()
+
+    if flask.request.method == "POST":
+        for coin in coins:
+            coin_quantity = "{}_quantity".format(coin._name)
+            coin._quantity = flask.request.form[coin_quantity]
+
+        try:
+            db.session.commit()
+
+            return flask.redirect("/")
+        except Exception as e:
+            raise
+
+    return flask.render_template("coins.html", coins=coins)
+
 def _getValue(items):
     total_value = 0.0
     for item in items:
@@ -182,6 +207,15 @@ def _getWeight(items):
         total_weight += (item._weight * item._quantity)
 
     return round(total_weight, 1)
+
+def _convertDefault(coins, default="Gold"):
+    default_value = Coin.query.filter_by(_name=default).first()._value
+
+    gold = 0.0
+    for coin in coins:
+        gold += coin._value * coin._quantity
+
+    return round(gold/default_value, 1)
 
 if __name__ == '__main__':
     app.run(debug=True)
