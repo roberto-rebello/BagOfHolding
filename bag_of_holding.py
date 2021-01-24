@@ -1,9 +1,10 @@
+import os
 import flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = flask.Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///bag.db'
-app.secret_key ="" 
+app.secret_key = os.urandom(24)
 
 
 db = SQLAlchemy(app)
