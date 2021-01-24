@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = flask.Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///bag.db'
+app.secret_key ="" 
+
 
 db = SQLAlchemy(app)
 
@@ -57,6 +59,24 @@ class Coin(db.Model):
     def __repr__(self):
         return "<Coin {}>".format(self._id)
 
+@app.route("/login", methods = ["POST", "GET"])
+def login():
+    if flask.request.method == "POST":
+        if flask.request.form["user"] == "admin" and flask.request.form["pass"] == "admin":
+            flask.session["logged_in"] = True
+            return flask.redirect("/")
+        else:
+            error = "Invalid credentials"
+            return flask.render_template("login.html", error=error)
+
+    else:
+        return flask.render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    flask.session["logged_in"] = False
+    return flask.redirect("/")
+
 @app.route("/", methods = ["POST", "GET"])
 def index():
     if flask.request.method == "POST":
@@ -78,18 +98,21 @@ def index():
         except Exception as e:
             raise
     else:
-        items = Item.query.order_by(Item._name).all()
-        items_value = _getValue(items)
-        items_weight = _getWeight(items)
+        if flask.session.get("logged_in"):
+            items = Item.query.order_by(Item._name).all()
+            items_value = _getValue(items)
+            items_weight = _getWeight(items)
 
-        coins = Coin.query.order_by(Coin._value).all()
-        party_gold = _convertDefault(coins)
+            coins = Coin.query.order_by(Coin._value).all()
+            party_gold = _convertDefault(coins)
 
-        return flask.render_template("index.html",
-                                     items=items,
-                                     items_value=items_value,
-                                     items_weight=items_weight,
-                                     party_gold=party_gold)
+            return flask.render_template("index.html",
+                                         items=items,
+                                         items_value=items_value,
+                                         items_weight=items_weight,
+                                         party_gold=party_gold)
+        else:
+            return flask.redirect("/login")
 
 @app.route("/create")
 def create_item():

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+{% if error != "" %}
+<h5 style="color: red"> {{ error }} </h5>
+{% endif %}
+<div class="content">
+    <form class="update" action="/login" method="POST">
+      <label for="user">User</label>
+      <input type="text" name="user" value="">
+      <label for="pass">Password</label>
+      <input type="password" name="pass" value="">
+      <input type="submit" value="Log In">
+    </form>
+</div>
+{% endblock %}
