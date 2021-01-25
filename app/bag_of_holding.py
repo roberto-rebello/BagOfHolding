@@ -1,64 +1,19 @@
 import os
 import flask
-from flask_sqlalchemy import SQLAlchemy
+
+from models.coin import Coin
+from models.item import Item
+
+from models import db
 
 app = flask.Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///bag.db'
+db.init_app(app)
+
+app.app_context().push()
+db.create_all()
+
 app.secret_key = os.urandom(24)
-
-
-db = SQLAlchemy(app)
-
-class Item(db.Model):
-    _id = db.Column(db.Integer, primary_key = True)
-    _name = db.Column(db.String(200), nullable = False)
-    _description = db.Column(db.String(500), default = "")
-    _location = db.Column(db.String(500), default = "")
-    _price = db.Column(db.Float, default = 0)
-    _weight = db.Column(db.Float, default = 0)
-    _quantity = db.Column(db.Integer, default = 1)
-    _type = db.Column(db.String(50), default = "")
-    _isMagic = db.Column(db.String(3), default = "No")
-    _href = db.Column(db.String(100), default = "")
-
-    def __init__(self, name, description, location, price, weight, quantity, type, isMagic, href, **kwargs):
-        super(Item, self).__init__(**kwargs)
-        self._name = name
-        self._description = description
-        self._location = location
-        self._price = price
-        self._weight = weight
-        self._quantity = quantity
-        self._type = type
-        self._isMagic = isMagic
-        self._href = href
-
-    def __str__(self):
-        return "Item: {}\n\tID: {}\n\tDescription: {}\n\tLocation: {}\n\tUnit price: {}\n\tUnit weight:: {}\n\tQuantity:"\
-            " {}\n\tType: {}\n\tMagical: {}\n\thref: {}\n".format(self._name, str(self._id), self._description,
-            self._location, str(self._price), str(self._weight), str(self._quantity), self._type, self._isMagic, self._href)
-
-    def __repr__(self):
-        return "<Item {}>".format(self._id)
-
-class Coin(db.Model):
-    _id = db.Column(db.Integer, primary_key = True)
-    _name = db.Column(db.String(50), nullable = False)
-    _value = db.Column(db.Integer, nullable = False, default = 1)
-    _quantity = db.Column(db.Integer, nullable = False, default = 0)
-
-    def __init__(self, name, value, quantity, **kwargs):
-        super(Coin, self).__init__(**kwargs)
-        self._name = name
-        self._value = value
-        self._quantity = quantity
-
-    def __str__(self):
-        return "Item: {}\n\tID: {}\n\tUnit value: {}\n\tQuantity: {}\n".format(self._name, str(self._id), str(self._value),
-            str(self._quantity))
-
-    def __repr__(self):
-        return "<Coin {}>".format(self._id)
 
 @app.route("/login", methods = ["POST", "GET"])
 def login():
@@ -233,7 +188,10 @@ def _getWeight(items):
     return round(total_weight, 1)
 
 def _convertDefault(coins, default="Gold"):
-    default_value = Coin.query.filter_by(_name=default).first()._value
+    default_value = Coin.query.filter_by(_name=default).first()
+
+    # TODO Make the application stateless
+    default_value = default_value._value if default_value else 1
 
     gold = 0.0
     for coin in coins:

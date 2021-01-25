@@ -21,7 +21,6 @@ RUN apk del .build-dependencies && rm -rf /var/cache/apk/*
 # DB migration
 RUN python migrate.py
 
-
 # Serve application
 EXPOSE 5000
 CMD ["uwsgi", "--ini", "/app/bag/deploy/uwsgi.ini"]

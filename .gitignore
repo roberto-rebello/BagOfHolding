@@ -130,3 +130,6 @@ dmypy.json
 
 # SQL Database
 *.db
+
+# Vs code config
+.vscode
