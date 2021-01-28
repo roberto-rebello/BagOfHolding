@@ -16,4 +16,4 @@ RUN python migrate.py
 
 # Serve application
 EXPOSE 5000
-CMD ["uwsgi", "--ini", "/app/bag/deploy/uwsgi.ini"]
+CMD ["gunicorn", "/app/bag/bag_of_holding:app"]
