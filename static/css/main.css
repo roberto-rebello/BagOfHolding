@@ -39,7 +39,29 @@ td {
 }
 
 input {
-    background-color: #50505030
+    background-color: #50505030;
+    width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button{
+    background-color: #505050F0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.navbar {
+    overflow: hidden;
+    width: 100%
 }
 
 .sidenav {
@@ -77,6 +99,18 @@ a {
 
 .noHover:hover, .noHover :hover {
     background-color: transparent;
+}
+
+/* Search box */
+input.search {
+  width: 200px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+/* When the input field gets focus, change its width to 100% */
+input:focus.search, input:hover.search {
+  width: 100%;
 }
 
 /* Flexbox */
@@ -207,6 +241,17 @@ a {
     justify-content: space-around;
 }
 
+.start {
+    text-align: center;
+    align-content: center;
+    justify-content: flex-start;
+}
+
+.end {
+    text-align: center;
+    align-content: center;
+    justify-content: flex-end;
+}
 
 /* Remove arros from input */
 /* Chrome, Safari, Edge, Opera */

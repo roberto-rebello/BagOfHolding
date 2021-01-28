@@ -4,21 +4,20 @@
 {% endblock %}
 
 {% block body %}
-<div class="">
+<div class="navbar row">
+    <div class="col-2">
+    </div>
+    <div class="col-6 center">
+        <h1>Bag Of Holding</h1>
+    </div>
+    <div class="col-2 end">
+        <form action="/logout" >
+            <button type="submit" name="logout">Log Out</button>
+        </form>
+    </div>
 </div>
 
 <div class="">
-    <h1>Bag Of Holding</h1>
-
-    <form action="/logout" >
-        <input type="submit" name="" value="Log Out">
-    </form>
-    <br>
-    <form action="/create" >
-        <input type="submit" name="create" value="Add Item">
-    </form>
-    <br>
-
     {% if items|length < 1 %}
     <h4>Such Empty...</h4>
     <img src="{{ url_for('static', filename='img/tumbleweed.gif') }}" alt="Tumbleweed">
@@ -39,8 +38,16 @@
         </tr>
     </table>
     <br>
-    <input type="text" id="searchItem" onkeyup="searchItem()" placeholder="Search for an item..">
-    <br>
+    <div class="row">
+        <div class="col-1 center">
+            <form action="/create" >
+                <button type="submit" name="create">Add Item</button>
+            </form>
+        </div>
+        <div class="col-8 start">
+            <input class="search" type="text" id="searchItem" onkeyup="searchItem()" placeholder="Search for an item..">
+        </div>
+    </div>
     <br>
     <table id="itemTable">
         <tr class="noHover">
