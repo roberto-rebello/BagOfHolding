@@ -10,17 +10,17 @@
     <form class="add" action="/" method="POST">
         <label for="name">Name: </label>
         <input type="text" name="name" id="name" placeholder="Item name" required><br>
-        <label for="name">Description: </label>
+        <label for="description">Description: </label>
         <input type="text" name="description" id="description" placeholder="Item description (optional)"><br>
-        <label for="name">Location: </label>
+        <label for="location">Location: </label>
         <input type="text" name="location" id="location" placeholder="Where was the item found?" required><br>
-        <label for="name">Price (g): </label>
+        <label for="price">Price (g): </label>
         <input type="number" name="price" id="price" value="0" min="0" step="0.1"><br>
-        <label for="name">Weight (lb): </label>
+        <label for="weight">Weight (lb): </label>
         <input type="number" name="weight" id="weight" value="0" min="0" step="0.1"><br>
-        <label for="name">Quantity: </label>
+        <label for="quantity">Quantity: </label>
         <input type="number" name="quantity" id="quantity" value="1" min="1"><br>
-        <label for="name">Type: </label>
+        <label for="type">Type: </label>
         <select name="type">
             <option value="Weapon" selected>Weapon</option>
             <option value="Armor">Armor</option>
@@ -32,10 +32,10 @@
             <option value="Quest Item">Quest Item</option>
             <option value="Misc">Misc</option>
         </select><br>
-        <label for="name">Magic Item: </label>
+        <label for="isMagic">Magic Item: </label>
         <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes"><br>
         <input type="hidden" name="isMagic" id="isMagic" value="No">
-        <label for="name">External link: </label>
+        <label for="href">External link: </label>
         <input type="text" name="href" id="href" placeholder="Item href"><br>
         <div class="add center" style="text-align: center">
             <input type="submit" value="Add Item"><br>

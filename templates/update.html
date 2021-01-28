@@ -10,17 +10,17 @@
     <form class="update" action="/update/{{ item._id }}" method="POST">
         <label for="name">Name: </label>
         <input type="text" name="name" id="name" value="{{ item._name }}" required><br>
-        <label for="name">Description: </label>
+        <label for="description">Description: </label>
         <input type="text" name="description" id="description" value="{{ item._description }}"><br>
-        <label for="name">Location: </label>
+        <label for="location">Location: </label>
         <input type="text" name="location" id="location" value="{{ item._location }}" required><br>
-        <label for="name">Price (g): </label>
+        <label for="price">Price (g): </label>
         <input type="number" name="price" id="price" value="{{ item._price }}" min="0" step="0.1"><br>
-        <label for="name">Weight (lb): </label>
+        <label for="weight">Weight (lb): </label>
         <input type="number" name="weight" id="weight" value="{{ item._weight }}" min="0" step="0.1"><br>
-        <label for="name">Quantity: </label>
+        <label for="quantity">Quantity: </label>
         <input type="number" name="quantity" id="quantity" value="{{ item._quantity }}" min="1"><br>
-        <label for="name">Type: </label>
+        <label for="type">Type: </label>
         <select name="type">
             <option value="Weapon" selected>Weapon</option>
             <option value="Armor">Armor</option>
@@ -32,14 +32,14 @@
             <option value="Quest Item">Quest Item</option>
             <option value="Misc">Misc</option>
         </select><br>
-        <label for="name">Magic Item: </label>
+        <label for="isMagic">Magic Item: </label>
         {% if item._isMagic == "Yes" %}
         <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes" checked><br>
         {% else %}
         <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes"><br>
         {% endif %}
         <input type="hidden" name="isMagic" id="isMagic" value="No">
-        <label for="name">External link: </label>
+        <label for="href">External link: </label>
         <input type="text" name="href" id="href" value="{{ item._href }}"><br>
         <input type="submit" value="Update"><br>
     </form>
