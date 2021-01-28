@@ -1,3 +1,8 @@
+html {
+    background: url("../img/parchment.jpg");
+    scrollbar-color: #782e22 #111;
+}
+
 body {
     margin: auto;
     text-align: center;
@@ -17,7 +22,7 @@ table {
 }
 
 tr:hover {
-    background-color: #f5f5f5;
+    background-color: #50505050;
 }
 
 th {
@@ -31,6 +36,10 @@ td {
     border-color: black;
     height: 25px;
     max-width: 500px;
+}
+
+input {
+    background-color: #50505030
 }
 
 .sidenav {
@@ -196,4 +205,17 @@ a {
     text-align: center;
     align-content: center;
     justify-content: space-around;
+}
+
+/* Remove arros from input */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
