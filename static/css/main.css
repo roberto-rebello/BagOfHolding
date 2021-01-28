@@ -207,6 +207,7 @@ a {
     justify-content: space-around;
 }
 
+
 /* Remove arros from input */
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -218,4 +219,83 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+
+/* Login page */
+.login {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    /* background-color: transparent; */
+    padding-top: 60px;
+    text-align: left;
+}
+
+.login-content {
+    background: url("../img/parchment.jpg");
+    scrollbar-color: #782e22 #111;
+    margin: 5% auto auto auto;
+    border: 5px solid #888;
+    width: 30%;
+}
+
+/* Set a style for all login buttons */
+.login button{
+    background-color: #505050F0;
+    color: white;
+    padding: 14px 20px;
+    margin: 10px 25%;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+}
+
+.login button:hover {
+    opacity: 0.8;
+}
+
+/* Set a style for login input fields */
+.login input[type=text], .login input[type=password] {
+  width: 90%;
+  padding: 12px 20px;
+  margin: 8px 5%;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.login label {
+    margin-left: 5%;
+}
+
+.avatar {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+
+img.avatar {
+  width: 60%;
+  border-radius: 50%;
+}
+
+/* Add Zoom Animation */
+.login .animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+  from {-webkit-transform: scale(0)}
+  to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+  from {transform: scale(0)}
+  to {transform: scale(1)}
 }
