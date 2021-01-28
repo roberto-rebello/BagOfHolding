@@ -1,12 +1,5 @@
 FROM python:3-alpine
 
-RUN apk add --virtual .build-dependencies \
-            --no-cache \
-            python3-dev \
-            build-base \
-            linux-headers \
-            pcre-dev
-RUN apk add --no-cache pcre
 
 WORKDIR /app/bag
 
