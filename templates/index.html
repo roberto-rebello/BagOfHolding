@@ -39,7 +39,10 @@
         </tr>
     </table>
     <br>
-    <table>
+    <input type="text" id="searchItem" onkeyup="searchItem()" placeholder="Search for an item..">
+    <br>
+    <br>
+    <table id="itemTable">
         <tr class="noHover">
             <th>Name</th>
             <th>Description</th>
@@ -52,7 +55,7 @@
             <th>Actions</th>
         </tr>
         {% for item in items %}
-        <tr>
+        <tr id="item_{{item._id}}">
             {% if item._href == "" %}
             <td>{{ item._name}}</td>
             {% else %}
@@ -80,16 +83,45 @@
             <td>{{ item._type }}</td>
             <td>{{ item._isMagic }}</td>
             <td>
-                <!-- <a href="/update/{{item._id}}">Update</a> -->
                 <a href="/update/{{item._id}}"><i class='far fa-edit'></i></a>
-                <!-- <a href="/copy/{{item._id}}">Copy</a> -->
                 <a href="/copy/{{item._id}}"><i class='far fa-copy'></i></a>
-                <!-- <a href="/delete/{{item._id}}">Delete</a> -->
                 <a href="/delete/{{item._id}}"><i class='fa fa-trash'></i></a>
             </td>
         </tr>
         {% endfor %}
     </table>
+
+    <script>
+        function searchItem() {
+          var filter = document.getElementById("searchItem").value.toUpperCase();
+          var items = document.getElementById("itemTable").getElementsByTagName("tr");
+
+          // Loop through all items, hide those that don't match the search query
+          for (var i = 1; i < items.length; i++) { // Skip header
+
+                var name = items[i].getElementsByTagName("td")[0]; // item name field
+                var nameValue = name.textContent || name.innerText;
+
+                var location = items[i].getElementsByTagName("td")[2]; // item location field
+                var locationValue = location.textContent || location.innerText;
+
+                var type = items[i].getElementsByTagName("td")[6]; // item type field
+                var typeValue = type.textContent || type.innerText;
+
+                if (nameValue.toUpperCase().indexOf(filter) > -1 ||
+                    typeValue.toUpperCase().indexOf(filter) > -1 ||
+                    locationValue.toUpperCase().indexOf(filter) > -1) {
+
+                  items[i].style.display = "";
+
+                } else {
+
+                  items[i].style.display = "none";
+
+                }
+            }
+        }
+    </script>
     {% endif %}
 </div>
 {% endblock %}
