@@ -9,7 +9,6 @@ ADD . .
 RUN pip install -r /app/bag/requirements.txt
 
 # Install server dependencies
-RUN apk del .build-dependencies && rm -rf /var/cache/apk/*
 
 # DB migration
 RUN python migrate.py
