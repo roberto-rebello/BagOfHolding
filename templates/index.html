@@ -4,20 +4,27 @@
 {% endblock %}
 
 {% block body %}
-<div class="navbar row">
-    <div class="col-2">
-    </div>
-    <div class="col-6 center">
-        <h1>Bag Of Holding</h1>
-    </div>
-    <div class="col-2 end">
-        <form action="/logout" >
-            <button type="submit" name="logout">Log Out</button>
-        </form>
+
+<div class="sidenav">
+    <div class="row center">
+        <img src="../static/img/bag.webp" class="avatar">
     </div>
 </div>
 
-<div class="">
+<div class="content">
+    <div class="navbar row">
+        <div class="col-2">
+        </div>
+        <div class="col-6 center">
+            <h1>Bag Of Holding</h1>
+        </div>
+        <div class="col-2 end">
+            <form action="/logout" >
+                <button type="submit" name="logout">Log Out</button>
+            </form>
+        </div>
+    </div>
+
     {% if items|length < 1 %}
     <h4>Such Empty...</h4>
     <img src="{{ url_for('static', filename='img/tumbleweed.gif') }}" alt="Tumbleweed">
@@ -44,8 +51,9 @@
                 <button type="submit" name="create">Add Item</button>
             </form>
         </div>
-        <div class="col-8 start">
-            <input class="search" type="text" id="searchItem" onkeyup="searchItem()" placeholder="Search for an item..">
+        <div class="col-9 end">
+            <span class="search fas fa-search"></span>
+            <input class="search" type="text" id="searchItem" onkeyup="searchItem()" onfocusout="checkFocus()">
         </div>
     </div>
     <br>
@@ -127,6 +135,12 @@
 
                 }
             }
+        }
+
+        function checkFocus() {
+            var element = document.getElementById("searchItem");
+            var empty = (element.value == "")
+            element.classList.toggle("notEmpty", !empty)
         }
     </script>
     {% endif %}
