@@ -38,12 +38,18 @@ td {
     max-width: 500px;
 }
 
+label {
+    margin-right: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
 input {
     background-color: #50505030;
     width: 100%;
+    margin: 5px 0px 10px;
     padding: 12px 20px;
     display: inline-block;
-    border: 1px solid #ccc;
     box-sizing: border-box;
 }
 
@@ -79,18 +85,9 @@ button:hover {
   margin-left: 200px;
 }
 
-.add, .update {
-    margin:auto;
-    width: 33%;
-    text-align: left;
-}
-
-.add input, .update input {
-    width: 100%;
-}
-
 input.checkbox {
     width: auto;
+    margin: auto 0px;
 }
 
 a {
@@ -235,22 +232,22 @@ input:focus.search, input:hover.search {
     min-width: 100%;
 }
 
-.center {
-    text-align: center;
-    align-content: center;
-    justify-content: space-around;
-}
-
 .start {
-    text-align: center;
-    align-content: center;
+    text-align: left;
+    align-content: start;
     justify-content: flex-start;
 }
 
 .end {
+    text-align: right;
+    align-content: end;
+    justify-content: flex-end;
+}
+
+.center {
     text-align: center;
     align-content: center;
-    justify-content: flex-end;
+    justify-content: space-around;
 }
 
 /* Remove arros from input */
@@ -283,7 +280,6 @@ input[type=number] {
 
 .login-content {
     background: url("../img/parchment.jpg");
-    scrollbar-color: #782e22 #111;
     margin: 5% auto auto auto;
     border: 5px solid #888;
     width: 30%;
@@ -307,11 +303,7 @@ input[type=number] {
 /* Set a style for login input fields */
 .login input[type=text], .login input[type=password] {
   width: 90%;
-  padding: 12px 20px;
   margin: 8px 5%;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
 }
 
 .login label {
