@@ -21,7 +21,7 @@ table {
 
 }
 
-tr:hover {
+tr:hover, .sidenav a:hover {
     background-color: #50505050;
 }
 
@@ -53,6 +53,19 @@ input {
     box-sizing: border-box;
 }
 
+/* Remove arros from input */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 button{
     background-color: #505050F0;
     color: white;
@@ -63,6 +76,10 @@ button{
 
 button:hover {
     opacity: 0.8;
+}
+
+a {
+    color: black;
 }
 
 .navbar {
@@ -81,6 +98,14 @@ button:hover {
   overflow-x: hidden;
 }
 
+.sidenav a {
+    font-size: 30px;
+    text-decoration: none;
+    padding: 12px 20px;
+    /* margin: 10px auto; */
+    width: 100%;
+}
+
 .content {
   margin-left: 300px;
 }
@@ -88,10 +113,6 @@ button:hover {
 input.checkbox {
     width: auto;
     margin: auto 0px;
-}
-
-a {
-    color: black;
 }
 
 .noHover:hover, .noHover :hover {
@@ -262,20 +283,6 @@ input:focus.search, input.search.notEmpty {
     align-content: center;
     justify-content: space-around;
 }
-
-/* Remove arros from input */
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
 
 /* Login page */
 .login {
