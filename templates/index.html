@@ -49,9 +49,9 @@
             </th>
         </tr>
         <tr>
-            <td>{{ party_gold }} g</td>
-            <td>{{ items_value }} g</td>
-            <td>{{ items_weight }} lb</td>
+            <td>{{ "{:,.1f}".format(party_gold) }} g</td>
+            <td>{{ "{:,.1f}".format(items_value) }} g</td>
+            <td>{{ "{:,.1f}".format(items_weight) }} lb</td>
         </tr>
     </table>
     <br>
@@ -88,8 +88,8 @@
             {% endif %}
             <td>{{ item._description }}</td>
             <td>{{ item._location }}</td>
-            <td>{{ item._price }}</td>
-            <td>{{ item._weight }}</td>
+            <td>{{ "{:,.1f}".format(item._price) }}</td>
+            <td>{{ "{:,.1f}".format(item._weight) }}</td>
             <td>
                 <div class="row">
                     <div class="col-5 center">
