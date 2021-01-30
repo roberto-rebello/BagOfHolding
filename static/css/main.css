@@ -36,6 +36,7 @@ td {
     border-color: black;
     height: 25px;
     max-width: 500px;
+    min-width: 100px;
 }
 
 label {
