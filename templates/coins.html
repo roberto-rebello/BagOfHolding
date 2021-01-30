@@ -4,15 +4,25 @@
 {% endblock %}
 
 {% block body %}
-<div class="content">
+<div class="">
     <h1>Update Party Gold</h1>
+    <div class="row center">
 
-    <form class="update" action="/update/coin" method="POST">
-        {% for coin in coins %}
-        <h2>{{ coin._name }}</h2>
-        <input type="number" name="{{ coin._name }}_quantity" id="{{ coin._name }}_quantity" value="{{ coin._quantity }}" required><br>
-        {% endfor %}
-        <input type="submit" value="Update"><br>
-    </form>
+    </div>
+    <div class="row center">
+        <div class="col-3 center">
+            <form class="start" action="/update/coin" method="POST" id="update_coins">
+                {% for coin in coins %}
+                <label for="{{ coin._name }}_quantity"><b>{{ coin._name }}</b></label>
+                <input type="number" name="{{ coin._name }}_quantity" id="{{ coin._name }}_quantity" value="{{ coin._quantity }}" required>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+    <div class="row center">
+        <div class="col-3 center">
+            <button type="submit" form="update_coins">Update</button>
+        </div>
+    </div>
 </div>
 {% endblock %}
