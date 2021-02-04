@@ -11,7 +11,7 @@
     </div>
     <div class="row center">
         <div class="col-3 center">
-            <form class="start" action="/update/coin" method="POST" id="update_coins">
+            <form class="start" action="/update/coin" method="POST" id="update_coins_form">
                 {% for coin in coins %}
                 <label for="{{ coin._name }}_quantity"><b>{{ coin._name }}</b></label>
                 <input type="number" name="{{ coin._name }}_quantity" id="{{ coin._name }}_quantity" value="{{ coin._quantity }}" required>
@@ -22,7 +22,7 @@
     <div class="row center">
         <div class="col-3 center">
             <div class="col-5 center">
-                <button type="submit" form="update_coins">Update</button>
+                <button type="submit" form="update_coins_form">Update</button>
             </div>
             <div class="col-5 center">
                 <form action="/" method="GET">

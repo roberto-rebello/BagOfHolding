@@ -37,7 +37,7 @@
             <th>
                 <i class='fas fa-coins'></i>
                 Party Gold
-                <a href="/update/coin"><i class='far fa-edit'></i></a>
+                <i class='far fa-edit' onclick="show('update_coins', true)"></i>
             </th>
             <th>
                 <i class='fas fa-funnel-dollar'></i>
@@ -54,19 +54,16 @@
             <td>{{ "{:,.1f}".format(items_weight) }} lb</td>
         </tr>
     </table>
-    <br>
+
     <div class="row">
         <div class="col-1 center">
-            <form action="/create" >
-                <button type="submit" name="create">Add Item</button>
-            </form>
+            <button type="submit" name="create" onclick="show('add_item', true)">Add Item</button>
         </div>
         <div class="col-9 end">
             <span class="search fas fa-search"></span>
             <input class="search" type="text" id="searchItem" onkeyup="searchItem()" onfocusout="checkFocus()">
         </div>
     </div>
-    <br>
     <table id="itemTable">
         <tr class="noHover">
             <th>Name</th>
@@ -117,7 +114,101 @@
         {% endfor %}
     </table>
 
+    <div class="hidden" id="update_coins">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Update Party Gold</h1>
+                    <div class="row center">
+                        <div class="col-5 center">
+                            <form class="start" action="/coin" method="POST" id="update_coins_form">
+                                {% for coin in coins %}
+                                <label for="{{ coin._name }}_quantity"><b>{{ coin._name }}</b></label>
+                                <input type="number" name="{{ coin._name }}_quantity" id="{{ coin._name }}_quantity" value="{{ coin._quantity }}" required>
+                                {% endfor %}
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-5 center">
+                            <div class="col-5 center">
+                                <button type="submit" form="update_coins_form">Update</button>
+                            </div>
+                            <div class="col-5 center">
+                                <button onclick="show('update_coins', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden" id="add_item">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Add an Item</h1>
+                    <div class="row center" style="margin-bottom: 10px">
+                        <div class="col-6 center">
+                            <div class="col-5 start">
+                                <label for="type"><b>Type: </b></label>
+                                <select name="type" form="add_item_form">
+                                    <option value="Weapon" selected>Weapon</option>
+                                    <option value="Armor">Armor</option>
+                                    <option value="Shield">Shield</option>
+                                    <option value="Potion">Potion</option>
+                                    <option value="Scroll">Scroll</option>
+                                    <option value="Wand">Wand</option>
+                                    <option value="Wondrous Item">Wondrous Item</option>
+                                    <option value="Quest Item">Quest Item</option>
+                                    <option value="Misc">Misc</option>
+                                </select>
+                            </div>
+                            <div class="col-5 start">
+                                <label for="isMagic"><b>Magic Item: </b></label>
+                                <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes" form="add_item_form">
+                                <input type="hidden" name="isMagic" id="isMagic" value="No" form="add_item_form">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <form class="start" action="/" method="POST" id="add_item_form">
+                                <label for="name"><b>Name: </b></label>
+                                <input type="text" name="name" id="name" placeholder="Item name" required>
+                                <label for="description"><b>Description: </b></label>
+                                <input type="text" name="description" id="description" placeholder="Item description (optional)">
+                                <label for="location"><b>Location: </b></label>
+                                <input type="text" name="location" id="location" placeholder="Where was the item found?" required>
+                                <label for="price"><b>Price (g): </b></label>
+                                <input type="number" name="price" id="price" value="0" min="0" step="0.1">
+                                <label for="weight"><b>Weight (lb): </b></label>
+                                <input type="number" name="weight" id="weight" value="0" min="0" step="0.1">
+                                <label for="quantity"><b>Quantity: </b></label>
+                                <input type="number" name="quantity" id="quantity" value="1" min="1">
+                                <label for="href"><b>External link: </b></label>
+                                <input type="text" name="href" id="href" placeholder="Item href">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <div class="col-5 center">
+                                <button type="submit" form="add_item_form">Add Item</button>
+                            </div>
+                            <div class="col-5 center">
+                                <button type="submit" onclick="show('add_item', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+
         function searchItem() {
           var filter = document.getElementById("searchItem").value.toUpperCase();
           var items = document.getElementById("itemTable").getElementsByTagName("tr");
@@ -153,6 +244,11 @@
             var empty = (element.value == "")
             element.classList.toggle("notEmpty", !empty)
         }
+
+        function show(id, show) {
+            document.getElementById(id).classList.toggle("hidden", !show);
+        }
+
     </script>
     {% endif %}
 </div>

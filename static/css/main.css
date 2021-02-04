@@ -9,6 +9,7 @@ body {
     font-family: sans-serif;
     padding-left: 20px;
     padding-right: 20px;
+    padding-bottom: 20px;
 }
 
 table {
@@ -18,7 +19,6 @@ table {
     text-align: center;
     vertical-align: middle;
     border-collapse: collapse;
-
 }
 
 tr:hover, .sidenav a:hover {
@@ -55,7 +55,7 @@ input {
     box-sizing: border-box;
 }
 
-/* Remove arros from input */
+/* Remove arrows from input */
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -113,6 +113,10 @@ a {
   margin-left: 300px;
 }
 
+.hidden {
+    display: none;
+}
+
 input.checkbox {
     width: auto;
     margin: auto 0px;
@@ -126,6 +130,7 @@ input.checkbox {
 input.search {
     background-color: transparent;
     width: 0%;
+    margin: 10px 0px 10px;
     border-color: transparent;
     cursor: pointer;
     z-index: 1;
@@ -155,8 +160,6 @@ input:focus.search, input.search.notEmpty {
     flex-direction: row;
     justify-content: flex-start;
     flex: 0;
-    max-width: auto;
-    min-width: auto;
 }
 
 .col {
@@ -287,6 +290,24 @@ input:focus.search, input.search.notEmpty {
     justify-content: space-around;
 }
 
+.pop {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    text-align: left;
+}
+
+.pop-content {
+    background: url("../img/parchment.jpg");
+    margin: 10% auto auto auto;
+    border: 5px solid #888;
+    padding-bottom: 20px;
+    width: 40%;
+}
+
 /* Login page */
 .login {
     position: fixed; /* Stay in place */
@@ -296,7 +317,6 @@ input:focus.search, input.search.notEmpty {
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    /* background-color: transparent; */
     padding-top: 60px;
     text-align: left;
 }
@@ -345,7 +365,7 @@ img.avatar {
 }
 
 /* Add Zoom Animation */
-.login .animate {
+.animate {
   -webkit-animation: animatezoom 0.6s;
   animation: animatezoom 0.6s
 }
