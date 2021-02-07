@@ -1,0 +1,18 @@
+version: "3.8"
+
+volumes:
+    bag:
+        name: bag
+
+services:
+    bag:
+        build: .
+        hostname: bag_of_holding
+        init: true
+        restart: "unless-stopped"
+        volumes:
+            - bag:/app/bag/db
+        ports:
+            - target: 8000
+            published: 8000
+            protocol: tcp
