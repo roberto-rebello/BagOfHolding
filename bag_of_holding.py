@@ -112,7 +112,8 @@ def index():
                                          items=items,
                                          items_value=items_value,
                                          items_weight=items_weight,
-                                         party_gold=party_gold)
+                                         party_gold=party_gold,
+                                         coins=coins)
         else:
             return flask.redirect("/login")
 
@@ -201,23 +202,20 @@ def subtract(id):
     except Exception as e:
         raise
 
-@app.route("/update/coin", methods=["GET", "POST"])
+@app.route("/coin", methods=["POST"])
 def update_coin():
     coins = Coin.query.order_by(Coin._value).all()
 
-    if flask.request.method == "POST":
-        for coin in coins:
-            coin_quantity = "{}_quantity".format(coin._name)
-            coin._quantity = flask.request.form[coin_quantity]
+    for coin in coins:
+        coin_quantity = "{}_quantity".format(coin._name)
+        coin._quantity = flask.request.form[coin_quantity]
 
-        try:
-            db.session.commit()
+    try:
+        db.session.commit()
 
-            return flask.redirect("/")
-        except Exception as e:
-            raise
-
-    return flask.render_template("coins.html", coins=coins)
+        return flask.redirect("/")
+    except Exception as e:
+        raise
 
 def _getValue(items):
     total_value = 0.0

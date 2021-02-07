@@ -1,9 +1,15 @@
+html {
+    background: url("../img/parchment.jpg");
+    scrollbar-color: #782e22 #111;
+}
+
 body {
     margin: auto;
     text-align: center;
     font-family: sans-serif;
     padding-left: 20px;
     padding-right: 20px;
+    padding-bottom: 20px;
 }
 
 table {
@@ -13,11 +19,10 @@ table {
     text-align: center;
     vertical-align: middle;
     border-collapse: collapse;
-
 }
 
-tr:hover {
-    background-color: #f5f5f5;
+tr:hover, .sidenav a:hover {
+    background-color: #50505050;
 }
 
 th {
@@ -31,43 +36,120 @@ td {
     border-color: black;
     height: 25px;
     max-width: 500px;
+    min-width: 100px;
 }
 
-.sidenav {
-  height: 100%;
-  width: 200px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
+label {
+    margin-right: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 24px;
 }
 
-.content {
-  margin-left: 200px;
-}
-
-.add, .update {
-    margin:auto;
-    width: 33%;
-    text-align: left;
-}
-
-.add input, .update input {
+input {
+    background-color: #50505030;
     width: 100%;
+    margin: 5px 0px 10px;
+    padding: 12px 20px;
+    display: inline-block;
+    box-sizing: border-box;
 }
 
-input.checkbox {
-    width: auto;
+/* Remove arrows from input */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+button{
+    background-color: #505050F0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    min-width: 100px;
+}
+
+button:hover {
+    opacity: 0.8;
 }
 
 a {
     color: black;
 }
 
+.navbar {
+    overflow: hidden;
+    width: 100%
+}
+
+.sidenav {
+  height: 100%;
+  width: 300px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #50505050;
+  overflow-x: hidden;
+}
+
+.sidenav a {
+    font-size: 30px;
+    text-decoration: none;
+    padding: 12px 20px;
+    /* margin: 10px auto; */
+    width: 100%;
+}
+
+.content {
+  margin-left: 300px;
+}
+
+.hidden {
+    display: none;
+}
+
+input.checkbox {
+    width: auto;
+    margin: auto 0px;
+}
+
 .noHover:hover, .noHover :hover {
     background-color: transparent;
+}
+
+/* Search box */
+input.search {
+    background-color: transparent;
+    width: 0%;
+    margin: 10px 0px 10px;
+    border-color: transparent;
+    cursor: pointer;
+    z-index: 1;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+/* When the input field gets focus, change its width to 100% */
+input:focus.search, input.search.notEmpty {
+    background-color: #50505030;
+    width: 100%;
+    cursor: auto;
+    padding: 12px 35px;
+    border: medium none color;
+}
+
+.search.fa-search {
+  position: relative;
+  left: 30px;
 }
 
 /* Flexbox */
@@ -78,8 +160,6 @@ a {
     flex-direction: row;
     justify-content: flex-start;
     flex: 0;
-    max-width: auto;
-    min-width: auto;
 }
 
 .col {
@@ -88,8 +168,8 @@ a {
     flex-direction: row;
     justify-content: flex-start;
     flex: 0;
-    max-width: auto;
-    min-width: auto;
+    max-width: 100%;
+    min-width: 100%;
 }
 
 .col-1 {
@@ -182,18 +262,118 @@ a {
     min-width: 90%;
 }
 
-.col-10 {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
+.start {
+    text-align: left;
+    align-content: start;
     justify-content: flex-start;
-    flex: 0;
-    max-width: 100%;
-    min-width: 100%;
+}
+
+.end {
+    text-align: right;
+    align-content: end;
+    justify-content: flex-end;
 }
 
 .center {
     text-align: center;
     align-content: center;
     justify-content: space-around;
+}
+
+.pop {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    text-align: left;
+    overflow: auto; /* Enable scroll if needed */
+    /* Hide scrollbar */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.pop::-webkit-scrollbar {
+  display: none;
+}
+
+.pop-content {
+    background: url("../img/parchment.jpg");
+    margin: 10% auto auto auto;
+    border: 5px solid #888;
+    padding-bottom: 20px;
+    width: 40%;
+}
+
+/* Login page */
+.login {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    padding-top: 60px;
+    text-align: left;
+}
+
+.login-content {
+    background: url("../img/parchment.jpg");
+    margin: 5% auto auto auto;
+    border: 5px solid #888;
+    width: 30%;
+}
+
+/* Set a style for all login buttons */
+.login button{
+    background-color: #505050F0;
+    color: white;
+    padding: 14px 20px;
+    margin: 10px 25%;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+}
+
+.login button:hover {
+    opacity: 0.8;
+}
+
+/* Set a style for login input fields */
+.login input[type=text], .login input[type=password] {
+  width: 90%;
+  margin: 8px 5%;
+}
+
+.login label {
+    margin-left: 5%;
+}
+
+.avatar {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+
+img.avatar {
+  width: 60%;
+  border-radius: 50%;
+}
+
+/* Add Zoom Animation */
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+  from {-webkit-transform: scale(0)}
+  to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+  from {transform: scale(0)}
+  to {transform: scale(1)}
 }

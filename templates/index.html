@@ -4,20 +4,29 @@
 {% endblock %}
 
 {% block body %}
-<div class="">
+
+<div class="sidenav">
+    <div class="row center">
+        <img src="../static/img/bag.webp" class="avatar">
+    </div>
+    <div class="row start">
+        <a href="/"><b>Bag</b></a>
+    </div>
 </div>
 
-<div class="">
-    <h1>Bag Of Holding</h1>
-
-    <form action="/logout" >
-        <input type="submit" name="" value="Log Out">
-    </form>
-    <br>
-    <form action="/create" >
-        <input type="submit" name="create" value="Add Item">
-    </form>
-    <br>
+<div class="content">
+    <div class="navbar row">
+        <div class="col-2">
+        </div>
+        <div class="col-6 center">
+            <h1>Bag Of Holding</h1>
+        </div>
+        <div class="col-2 end">
+            <form action="/logout" >
+                <button type="submit" name="logout">Log Out</button>
+            </form>
+        </div>
+    </div>
 
     {% if items|length < 1 %}
     <h4>Such Empty...</h4>
@@ -26,20 +35,36 @@
     <table class="noHover">
         <tr>
             <th>
+                <i class='fas fa-coins'></i>
                 Party Gold
-                <a href="/update/coin"><i class='far fa-edit'></i></a>
+                <i class='far fa-edit' onclick="show('update_coins', true)"></i>
             </th>
-            <th>Items Value</th>
-            <th>Items Weight</th>
+            <th>
+                <i class='fas fa-funnel-dollar'></i>
+                Items Value
+            </th>
+            <th>
+                <i class='fas fa-weight-hanging'></i>
+                Items Weight
+            </th>
         </tr>
         <tr>
-            <td>{{ party_gold }} g</td>
-            <td>{{ items_value }} g</td>
-            <td>{{ items_weight }} lb</td>
+            <td>{{ "{:,.1f}".format(party_gold) }} g</td>
+            <td>{{ "{:,.1f}".format(items_value) }} g</td>
+            <td>{{ "{:,.1f}".format(items_weight) }} lb</td>
         </tr>
     </table>
-    <br>
-    <table>
+
+    <div class="row">
+        <div class="col-1 center">
+            <button type="submit" name="create" onclick="show('add_item', true)">Add Item</button>
+        </div>
+        <div class="col-9 end">
+            <span class="search fas fa-search"></span>
+            <input class="search" type="text" id="searchItem" onkeyup="searchItem()" onfocusout="checkFocus()">
+        </div>
+    </div>
+    <table id="itemTable">
         <tr class="noHover">
             <th>Name</th>
             <th>Description</th>
@@ -52,7 +77,7 @@
             <th>Actions</th>
         </tr>
         {% for item in items %}
-        <tr>
+        <tr id="item_{{item._id}}">
             {% if item._href == "" %}
             <td>{{ item._name}}</td>
             {% else %}
@@ -60,8 +85,8 @@
             {% endif %}
             <td>{{ item._description }}</td>
             <td>{{ item._location }}</td>
-            <td>{{ item._price }}</td>
-            <td>{{ item._weight }}</td>
+            <td>{{ "{:,.1f}".format(item._price) }}</td>
+            <td>{{ "{:,.1f}".format(item._weight) }}</td>
             <td>
                 <div class="row">
                     <div class="col-5 center">
@@ -80,16 +105,151 @@
             <td>{{ item._type }}</td>
             <td>{{ item._isMagic }}</td>
             <td>
-                <!-- <a href="/update/{{item._id}}">Update</a> -->
+                <!-- <a href="/sell/{{item._id}}"><i class='fas fa-dollar-sign'></i></a> -->
                 <a href="/update/{{item._id}}"><i class='far fa-edit'></i></a>
-                <!-- <a href="/copy/{{item._id}}">Copy</a> -->
                 <a href="/copy/{{item._id}}"><i class='far fa-copy'></i></a>
-                <!-- <a href="/delete/{{item._id}}">Delete</a> -->
                 <a href="/delete/{{item._id}}"><i class='fa fa-trash'></i></a>
             </td>
         </tr>
         {% endfor %}
     </table>
+
+    <div class="hidden" id="update_coins">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Update Party Gold</h1>
+                    <div class="row center">
+                        <div class="col-5 center">
+                            <form class="start" action="/coin" method="POST" id="update_coins_form">
+                                {% for coin in coins %}
+                                <label for="{{ coin._name }}_quantity"><b>{{ coin._name }}</b></label>
+                                <input type="number" name="{{ coin._name }}_quantity" id="{{ coin._name }}_quantity" value="{{ coin._quantity }}" required>
+                                {% endfor %}
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-5 center">
+                            <div class="col-5 center">
+                                <button type="submit" form="update_coins_form">Update</button>
+                            </div>
+                            <div class="col-5 center">
+                                <button onclick="show('update_coins', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden" id="add_item">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Add an Item</h1>
+                    <div class="row center" style="margin-bottom: 10px">
+                        <div class="col-6 center">
+                            <div class="col-5 start">
+                                <label for="type"><b>Type: </b></label>
+                                <select name="type" form="add_item_form">
+                                    <option value="Weapon" selected>Weapon</option>
+                                    <option value="Armor">Armor</option>
+                                    <option value="Shield">Shield</option>
+                                    <option value="Potion">Potion</option>
+                                    <option value="Scroll">Scroll</option>
+                                    <option value="Wand">Wand</option>
+                                    <option value="Wondrous Item">Wondrous Item</option>
+                                    <option value="Quest Item">Quest Item</option>
+                                    <option value="Misc">Misc</option>
+                                </select>
+                            </div>
+                            <div class="col-5 start">
+                                <label for="isMagic"><b>Magic Item: </b></label>
+                                <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes" form="add_item_form">
+                                <input type="hidden" name="isMagic" id="isMagic" value="No" form="add_item_form">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <form class="start" action="/" method="POST" id="add_item_form">
+                                <label for="name"><b>Name: </b></label>
+                                <input type="text" name="name" id="name" placeholder="Item name" required>
+                                <label for="description"><b>Description: </b></label>
+                                <input type="text" name="description" id="description" placeholder="Item description (optional)">
+                                <label for="location"><b>Location: </b></label>
+                                <input type="text" name="location" id="location" placeholder="Where was the item found?" required>
+                                <label for="price"><b>Price (g): </b></label>
+                                <input type="number" name="price" id="price" value="0" min="0" step="0.1">
+                                <label for="weight"><b>Weight (lb): </b></label>
+                                <input type="number" name="weight" id="weight" value="0" min="0" step="0.1">
+                                <label for="quantity"><b>Quantity: </b></label>
+                                <input type="number" name="quantity" id="quantity" value="1" min="1">
+                                <label for="href"><b>External link: </b></label>
+                                <input type="text" name="href" id="href" placeholder="Item href">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <div class="col-5 center">
+                                <button type="submit" form="add_item_form">Add Item</button>
+                            </div>
+                            <div class="col-5 center">
+                                <button type="submit" onclick="show('add_item', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function searchItem() {
+          var filter = document.getElementById("searchItem").value.toUpperCase();
+          var items = document.getElementById("itemTable").getElementsByTagName("tr");
+
+          // Loop through all items, hide those that don't match the search query
+          for (var i = 1; i < items.length; i++) { // Skip header
+
+                var name = items[i].getElementsByTagName("td")[0]; // item name field
+                var nameValue = name.textContent || name.innerText;
+
+                var location = items[i].getElementsByTagName("td")[2]; // item location field
+                var locationValue = location.textContent || location.innerText;
+
+                var type = items[i].getElementsByTagName("td")[6]; // item type field
+                var typeValue = type.textContent || type.innerText;
+
+                if (nameValue.toUpperCase().indexOf(filter) > -1 ||
+                    typeValue.toUpperCase().indexOf(filter) > -1 ||
+                    locationValue.toUpperCase().indexOf(filter) > -1) {
+
+                  items[i].style.display = "";
+
+                } else {
+
+                  items[i].style.display = "none";
+
+                }
+            }
+        }
+
+        function checkFocus() {
+            var element = document.getElementById("searchItem");
+            var empty = (element.value == "")
+            element.classList.toggle("notEmpty", !empty)
+        }
+
+        function show(id, show) {
+            document.getElementById(id).classList.toggle("hidden", !show);
+        }
+
+    </script>
     {% endif %}
 </div>
 {% endblock %}
