@@ -14,5 +14,5 @@ services:
             - bag:/app/bag/db
         ports:
             - target: 8000
-            published: 8000
-            protocol: tcp
+              published: 8000
+              protocol: tcp
