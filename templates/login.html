@@ -8,7 +8,7 @@
     <div class="login" id="login">
         <form class="login-content animate" action="/login" method="POST">
             <div class="avatar">
-                <img src="../static/img/bag.webp" class="avatar">
+                <img src="../static/img/{{ 'bag.webp'|getenv('BAG_ICON') }}" class="avatar">
                 {% if error != "" %}
                 <h4 style="color: red"> {{ error }} </h4>
                 {% endif %}

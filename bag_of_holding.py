@@ -7,6 +7,11 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db/bag.db'
 app.secret_key = os.urandom(24)
 
+# Custom Jinja filter
+def get_env(default, env):
+    return os.getenv(env, default)
+
+app.jinja_env.filters["getenv"] = get_env
 
 db = SQLAlchemy(app)
 
@@ -64,7 +69,7 @@ class Coin(db.Model):
 @app.route("/login", methods = ["POST", "GET"])
 def login():
     if flask.request.method == "POST":
-        if flask.request.form["user"] == "admin" and flask.request.form["pass"] == "admin":
+        if flask.request.form["user"] == os.getenv("BAG_USER", "admin") and flask.request.form["pass"] == os.getenv("BAG_PASS", "admin"):
             flask.session["logged_in"] = True
             return flask.redirect("/")
         else:
