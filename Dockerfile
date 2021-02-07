@@ -9,6 +9,9 @@ COPY requirements.txt .
 COPY static static
 COPY templates templates
 
+# Create db folder
+RUN mkdir db/
+
 # Install requirements
 RUN pip install -r requirements.txt
 
