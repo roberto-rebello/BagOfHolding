@@ -4,16 +4,21 @@
 {% endblock %}
 
 {% block body %}
-{% if error != "" %}
-<h5 style="color: red"> {{ error }} </h5>
-{% endif %}
-<div class="content">
-    <form class="update" action="/login" method="POST">
-      <label for="user">User</label>
-      <input type="text" name="user" value="">
-      <label for="pass">Password</label>
-      <input type="password" name="pass" value="">
-      <input type="submit" value="Log In">
-    </form>
+<div>
+    <div class="login" id="login">
+        <form class="login-content animate" action="/login" method="POST">
+            <div class="avatar">
+                <img src="../static/img/bag.webp" class="avatar">
+                {% if error != "" %}
+                <h4 style="color: red"> {{ error }} </h4>
+                {% endif %}
+            </div>
+            <label for="user"><b>User</b></label>
+            <input type="text" name="user" value="">
+            <label for="pass"><b>Password</b></label>
+            <input type="password" name="pass" value="">
+            <button type="submit">Login</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
