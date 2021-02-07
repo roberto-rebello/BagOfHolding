@@ -1,19 +1,23 @@
 FROM python:3-alpine
 
-
 WORKDIR /app/bag
 
-# TODO only copy nedded files
-ADD . .
+# Copy nedded files
+COPY bag_of_holding.py .
+COPY migrate.py .
+COPY requirements.txt .
+COPY static static
+COPY templates templates
 
-RUN pip install -r /app/bag/requirements.txt
+# Create db folder
+RUN mkdir db/
 
-# Install server dependencies
+# Install requirements
+RUN pip install -r requirements.txt
 
-# DB migration
+# DB creation
 RUN python migrate.py
 
-
 # Serve application
-EXPOSE 5000
-CMD ["gunicorn", "/app/bag/bag_of_holding:app"]
+EXPOSE 8000
+CMD ["gunicorn", "-b 0.0.0.0:8000", "bag_of_holding:app"]
