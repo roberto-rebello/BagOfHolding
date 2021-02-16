@@ -16,3 +16,5 @@ services:
             - target: 8000
               published: 8000
               protocol: tcp
+        environment:
+            - FONT_KIT=a076d05399

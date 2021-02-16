@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 
-        <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+        <script src="https://kit.fontawesome.com/{{ ''|getenv('FONT_KIT') }}.js"></script>
 
         <title>Bag Of Holding</title>
 
