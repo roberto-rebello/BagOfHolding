@@ -77,7 +77,7 @@ def index():
 def create_item():
     return flask.render_template("create.html")
 
-@app.route("/delete/<int:id>")
+@app.route("/delete/<int:id>", methods=["POST"])
 def delete_item(id):
     item = Item.query.get_or_404(id)
 

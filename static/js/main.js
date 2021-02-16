@@ -82,3 +82,15 @@ function sell_item(id) {
 
     show("sell_item", true)
 }
+
+function delete_item(id) {
+
+    var item = document.getElementById("item_" + id)
+    var item_quantity = parseInt(item.cells[5].textContent)
+
+    document.getElementById("delete_name").textContent = item.cells[0].textContent
+
+    document.getElementById("delete_item_form").action = "/delete/" + id
+
+    show("delete_item", true)
+}

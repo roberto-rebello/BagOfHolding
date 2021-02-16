@@ -113,7 +113,7 @@
                 <i class='fas fa-dollar-sign' onclick="sell_item({{item._id}})"></i>
                 <i class='far fa-edit' onclick="update_item({{item._id}})"></i>
                 <a href="/copy/{{item._id}}"><i class='far fa-copy'></i></a>
-                <a href="/delete/{{item._id}}"><i class='far fa-trash-alt'></i></a>
+                <i class='far fa-trash-alt' onclick="delete_item({{item._id}})"></i>
             </td>
         </tr>
         {% endfor %}
@@ -216,7 +216,7 @@
         <div class="row center">
             <div class="col center pop animate">
                 <div class="pop-content">
-                    <h1 class="center">Sell an Item</h1>
+                    <h1 class="center">Selling</h1>
                     <h2 class="center" id="sell_name"></h2>
                     <h4 class="center" id="sell_available"></h4>
                     <h4 class="center" id="sell_price"></h4>
@@ -231,10 +231,35 @@
                     <div class="row center">
                         <div class="col-6 center">
                             <div class="col-5 center">
-                                <button type="submit" form="sell_item_form">Sell Item</button>
+                                <button type="submit" form="sell_item_form">Sell</button>
                             </div>
                             <div class="col-5 center">
                                 <button type="submit" onclick="show('sell_item', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden" id="delete_item">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Deleting</h1>
+                    <h2 class="center" id="delete_name"></h2>
+                    <h4 class="center">Are you sure you what to do this?</h4>
+                    <h5 class="center">This action is irreversible</h5>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <div class="col-5 center">
+                                <form class="start" action="/delete/" method="POST" id="delete_item_form">
+                                    <button type="submit" form="delete_item_form">Delete</button>
+                                </form>
+                            </div>
+                            <div class="col-5 center">
+                                <button type="submit" onclick="show('delete_item', false)">Cancel</button>
                             </div>
                         </div>
                     </div>
