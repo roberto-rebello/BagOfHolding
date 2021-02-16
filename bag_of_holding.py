@@ -113,21 +113,22 @@ def update_item(id):
     else:
         return flask.render_template("update.html", item=item)
 
-@app.route("/sell/<int:id>", methods=["GET", "POST"])
+@app.route("/sell/<int:id>", methods=["POST"])
 def sell_item(id):
     try:
         item = Item.query.get_or_404(id)
         gold = Coin.query.filter_by(_name="Gold").first()
 
-        if flask.request.method == "GET":
-            gold._quantity += item._price
-            item._quantity -= 1
+        quantity_to_sell = int(flask.request.form["quantity"])
 
-            db.session.commit()
-            return flask.redirect("/")
+        gold._quantity += item._price * quantity_to_sell
+        item._quantity -= quantity_to_sell
 
-        else:
-            return flask.render_template("update.html", item=item)
+        if item._quantity <= 0:
+            db.session.delete(item)
+
+        db.session.commit()
+        return flask.redirect("/")
 
     except Exception as e:
         raise

@@ -110,7 +110,7 @@
             <td id="item_{{item._id}}_type">{{ item._type }}</td>
             <td id="item_{{item._id}}_isMagic">{{ item._isMagic }}</td>
             <td>
-                <a href="/sell/{{item._id}}"><i class='fas fa-dollar-sign'></i></a>
+                <i class='fas fa-dollar-sign' onclick="sell_item({{item._id}})"></i>
                 <i class='far fa-edit' onclick="update_item({{item._id}})"></i>
                 <a href="/copy/{{item._id}}"><i class='far fa-copy'></i></a>
                 <a href="/delete/{{item._id}}"><i class='far fa-trash-alt'></i></a>
@@ -204,6 +204,37 @@
                             </div>
                             <div class="col-5 center">
                                 <button type="submit" onclick="show('update_item', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden" id="sell_item">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Sell an Item</h1>
+                    <h2 class="center" id="sell_name"></h2>
+                    <h4 class="center" id="sell_available"></h4>
+                    <h4 class="center" id="sell_price"></h4>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <form class="start" action="/sell/" method="POST" id="sell_item_form">
+                                <label for="sell_quantity"><b>Quantity: </b></label>
+                                <input type="number" name="quantity" id="sell_quantity" value="1" min="1">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <div class="col-5 center">
+                                <button type="submit" form="sell_item_form">Sell Item</button>
+                            </div>
+                            <div class="col-5 center">
+                                <button type="submit" onclick="show('sell_item', false)">Cancel</button>
                             </div>
                         </div>
                     </div>

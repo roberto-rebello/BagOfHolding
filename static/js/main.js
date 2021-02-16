@@ -62,7 +62,23 @@ function update_item(id) {
         document.getElementById("update_href").value = ""
     }
 
-    document.getElementById("update_item_form").action += id
+    document.getElementById("update_item_form").action = "/update/" + id
 
     show("update_item", true)
+}
+
+function sell_item(id) {
+
+    var item = document.getElementById("item_" + id)
+    var item_quantity = parseInt(item.cells[5].textContent)
+
+    document.getElementById("sell_name").textContent = item.cells[0].textContent
+    document.getElementById("sell_available").textContent = "Available units: " + parseInt(item.cells[5].textContent)
+    document.getElementById("sell_price").textContent = "Price per unit: " + item.cells[3].textContent + " g"
+
+    document.getElementById("sell_quantity").max = parseInt(item.cells[5].textContent)
+
+    document.getElementById("sell_item_form").action = "/sell/" + id
+
+    show("sell_item", true)
 }
