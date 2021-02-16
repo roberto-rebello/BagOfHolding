@@ -162,6 +162,25 @@ def update_item(id):
     else:
         return flask.render_template("update.html", item=item)
 
+@app.route("/sell/<int:id>", methods=["GET", "POST"])
+def sell_item(id):
+    try:
+        item = Item.query.get_or_404(id)
+        gold = Coin.query.filter_by(_name="Gold").first()
+
+        if flask.request.method == "GET":
+            gold._quantity += item._price
+            item._quantity -= 1
+
+            db.session.commit()
+            return flask.redirect("/")
+
+        else:
+            return flask.render_template("update.html", item=item)
+
+    except Exception as e:
+        raise
+
 @app.route("/copy/<int:id>")
 def copy_item(id):
     item = Item.query.get_or_404(id)
