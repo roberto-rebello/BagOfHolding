@@ -117,6 +117,10 @@ a {
     display: none;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 input.checkbox {
     width: auto;
     margin: auto 0px;

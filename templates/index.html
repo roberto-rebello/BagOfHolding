@@ -42,7 +42,7 @@
             <th>
                 <i class='fas fa-coins'></i>
                 Party Gold
-                <i class='far fa-edit' onclick="show('update_coins', true)"></i>
+                <i class='clickable far fa-edit' onclick="show('update_coins', true)"></i>
             </th>
             <th>
                 <i class='fas fa-funnel-dollar'></i>
@@ -110,10 +110,10 @@
             <td id="item_{{item._id}}_type">{{ item._type }}</td>
             <td id="item_{{item._id}}_isMagic">{{ item._isMagic }}</td>
             <td>
-                <i class='fas fa-dollar-sign' onclick="sell_item({{item._id}})"></i>
-                <i class='far fa-edit' onclick="update_item({{item._id}})"></i>
+                <i class='clickable fas fa-dollar-sign' onclick="sell_item({{item._id}})"></i>
+                <i class='clickable far fa-edit' onclick="update_item({{item._id}})"></i>
                 <a href="/copy/{{item._id}}"><i class='far fa-copy'></i></a>
-                <i class='far fa-trash-alt' onclick="delete_item({{item._id}})"></i>
+                <i class='clickable far fa-trash-alt' onclick="delete_item({{item._id}})"></i>
             </td>
         </tr>
         {% endfor %}
