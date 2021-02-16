@@ -84,17 +84,17 @@
         {% for item in items %}
         <tr id="item_{{item._id}}">
             {% if item._href == "" %}
-            <td>{{ item._name}}</td>
+            <td id="item_{{item._id}}_name">{{ item._name}}</td>
             {% else %}
-            <td><a href="{{ item._href }}" target="_blank" rel="external noreferrer nofollow noopener">{{ item._name}}</a></td>
+            <td id="item_{{item._id}}_name"><a  id="item_{{item._id}}_href" href="{{ item._href }}" target="_blank" rel="external noreferrer nofollow noopener">{{ item._name}}</a></td>
             {% endif %}
-            <td>{{ item._description }}</td>
-            <td>{{ item._location }}</td>
-            <td>{{ "{:,.1f}".format(item._price) }}</td>
-            <td>{{ "{:,.1f}".format(item._weight) }}</td>
+            <td id="item_{{item._id}}_description">{{ item._description }}</td>
+            <td id="item_{{item._id}}_location">{{ item._location }}</td>
+            <td id="item_{{item._id}}_price">{{ "{:,.1f}".format(item._price) }}</td>
+            <td id="item_{{item._id}}_weight">{{ "{:,.1f}".format(item._weight) }}</td>
             <td>
                 <div class="row">
-                    <div class="col-5 center">
+                    <div class="col-5 center" id="item_{{item._id}}_quantity">
                         {{ item._quantity }}
                     </div>
                     <div class="col-5">
@@ -107,11 +107,11 @@
                     </div>
                 </div>
             </td>
-            <td>{{ item._type }}</td>
-            <td>{{ item._isMagic }}</td>
+            <td id="item_{{item._id}}_type">{{ item._type }}</td>
+            <td id="item_{{item._id}}_isMagic">{{ item._isMagic }}</td>
             <td>
                 <a href="/sell/{{item._id}}"><i class='fas fa-dollar-sign'></i></a>
-                <a href="/update/{{item._id}}"><i class='far fa-edit'></i></a>
+                <i class='far fa-edit' onclick="update_item({{item._id}})"></i>
                 <a href="/copy/{{item._id}}"><i class='far fa-copy'></i></a>
                 <a href="/delete/{{item._id}}"><i class='far fa-trash-alt'></i></a>
             </td>
@@ -149,18 +149,16 @@
         </div>
     </div>
 
-    {% endif %}
-
-    <div class="hidden" id="add_item">
+    <div class="hidden" id="update_item">
         <div class="row center">
             <div class="col center pop animate">
                 <div class="pop-content">
-                    <h1 class="center">Add an Item</h1>
+                    <h1 class="center">Update an Item</h1>
                     <div class="row center" style="margin-bottom: 10px">
                         <div class="col-6 center">
                             <div class="col-5 start">
-                                <label for="type"><b>Type: </b></label>
-                                <select name="type" form="add_item_form">
+                                <label for="update_type"><b>Type: </b></label>
+                                <select name="type" id="update_type" form="update_item_form">
                                     <option value="Weapon" selected>Weapon</option>
                                     <option value="Armor">Armor</option>
                                     <option value="Shield">Shield</option>
@@ -173,29 +171,94 @@
                                 </select>
                             </div>
                             <div class="col-5 start">
-                                <label for="isMagic"><b>Magic Item: </b></label>
-                                <input class="checkbox" type="checkbox" name="isMagic" id="isMagic" value="Yes" form="add_item_form">
-                                <input type="hidden" name="isMagic" id="isMagic" value="No" form="add_item_form">
+                                <label for="update_isMagic"><b>Magic Item: </b></label>
+                                <input class="checkbox" type="checkbox" name="isMagic" id="update_isMagic" value="Yes" form="update_item_form">
+                                <input type="hidden" name="isMagic" value="No" form="update_item_form">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <form class="start" action="/update/" method="POST" id="update_item_form">
+                                <label for="update_name"><b>Name: </b></label>
+                                <input type="text" name="name" id="update_name" placeholder="Item name" required>
+                                <label for="update_description"><b>Description: </b></label>
+                                <input type="text" name="description" id="update_description" placeholder="Item description (optional)">
+                                <label for="update_location"><b>Location: </b></label>
+                                <input type="text" name="location" id="update_location" placeholder="Where was the item found?" required>
+                                <label for="update_price"><b>Price (g): </b></label>
+                                <input type="number" name="price" id="update_price" value="0" min="0" step="0.1">
+                                <label for="update_weight"><b>Weight (lb): </b></label>
+                                <input type="number" name="weight" id="update_weight" value="0" min="0" step="0.1">
+                                <label for="update_quantity"><b>Quantity: </b></label>
+                                <input type="number" name="quantity" id="update_quantity" value="1" min="1">
+                                <label for="update_href"><b>External link: </b></label>
+                                <input type="text" name="href" id="update_href" placeholder="Item href">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <div class="col-5 center">
+                                <button type="submit" form="update_item_form">Update Item</button>
+                            </div>
+                            <div class="col-5 center">
+                                <button type="submit" onclick="show('update_item', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+
+    <div class="hidden" id="add_item">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Add an Item</h1>
+                    <div class="row center" style="margin-bottom: 10px">
+                        <div class="col-6 center">
+                            <div class="col-5 start">
+                                <label for="add_type"><b>Type: </b></label>
+                                <select name="type" id="add_type" form="add_item_form">
+                                    <option value="Weapon" selected>Weapon</option>
+                                    <option value="Armor">Armor</option>
+                                    <option value="Shield">Shield</option>
+                                    <option value="Potion">Potion</option>
+                                    <option value="Scroll">Scroll</option>
+                                    <option value="Wand">Wand</option>
+                                    <option value="Wondrous Item">Wondrous Item</option>
+                                    <option value="Quest Item">Quest Item</option>
+                                    <option value="Misc">Misc</option>
+                                </select>
+                            </div>
+                            <div class="col-5 start">
+                                <label for="add_isMagic"><b>Magic Item: </b></label>
+                                <input class="checkbox" type="checkbox" name="isMagic" id="add_isMagic" value="Yes" form="add_item_form">
+                                <input type="hidden" name="isMagic" id="add_isNotMagic" value="No" form="add_item_form">
                             </div>
                         </div>
                     </div>
                     <div class="row center">
                         <div class="col-6 center">
                             <form class="start" action="/" method="POST" id="add_item_form">
-                                <label for="name"><b>Name: </b></label>
-                                <input type="text" name="name" id="name" placeholder="Item name" required>
-                                <label for="description"><b>Description: </b></label>
-                                <input type="text" name="description" id="description" placeholder="Item description (optional)">
-                                <label for="location"><b>Location: </b></label>
-                                <input type="text" name="location" id="location" placeholder="Where was the item found?" required>
-                                <label for="price"><b>Price (g): </b></label>
-                                <input type="number" name="price" id="price" value="0" min="0" step="0.1">
-                                <label for="weight"><b>Weight (lb): </b></label>
-                                <input type="number" name="weight" id="weight" value="0" min="0" step="0.1">
-                                <label for="quantity"><b>Quantity: </b></label>
-                                <input type="number" name="quantity" id="quantity" value="1" min="1">
-                                <label for="href"><b>External link: </b></label>
-                                <input type="text" name="href" id="href" placeholder="Item href">
+                                <label for="add_name"><b>Name: </b></label>
+                                <input type="text" name="name" id="add_name" placeholder="Item name" required>
+                                <label for="add_description"><b>Description: </b></label>
+                                <input type="text" name="description" id="add_description" placeholder="Item description (optional)">
+                                <label for="add_location"><b>Location: </b></label>
+                                <input type="text" name="location" id="add_location" placeholder="Where was the item found?" required>
+                                <label for="add_price"><b>Price (g): </b></label>
+                                <input type="number" name="price" id="add_price" value="0" min="0" step="0.1">
+                                <label for="add_weight"><b>Weight (lb): </b></label>
+                                <input type="number" name="weight" id="add_weight" value="0" min="0" step="0.1">
+                                <label for="add_quantity"><b>Quantity: </b></label>
+                                <input type="number" name="quantity" id="add_quantity" value="1" min="1">
+                                <label for="add_href"><b>External link: </b></label>
+                                <input type="text" name="href" id="add_href" placeholder="Item href">
                             </form>
                         </div>
                     </div>

@@ -1,3 +1,13 @@
+function show(id, show) {
+    document.getElementById(id).classList.toggle("hidden", !show);
+}
+
+function checkFocus() {
+    var element = document.getElementById("searchItem");
+    var empty = (element.value == "")
+    element.classList.toggle("notEmpty", !empty)
+}
+
 function searchItem() {
   var filter = document.getElementById("searchItem").value.toUpperCase();
   var items = document.getElementById("itemTable").getElementsByTagName("tr");
@@ -28,12 +38,31 @@ function searchItem() {
     }
 }
 
-function checkFocus() {
-    var element = document.getElementById("searchItem");
-    var empty = (element.value == "")
-    element.classList.toggle("notEmpty", !empty)
-}
+function update_item(id) {
 
-function show(id, show) {
-    document.getElementById(id).classList.toggle("hidden", !show);
+    var item = document.getElementById("item_" + id)
+    var item_href = document.getElementById("item_" + id + "_href")
+    var item_isMagic = document.getElementById("item_" + id + "_isMagic")
+
+    document.getElementById("update_name").value = item.cells[0].textContent
+    document.getElementById("update_description").value = item.cells[1].textContent
+    document.getElementById("update_location").value = item.cells[2].textContent
+    document.getElementById("update_price").value = parseFloat(item.cells[3].textContent.replace(",",""))
+    document.getElementById("update_weight").value = parseFloat(item.cells[4].textContent.replace(",",""))
+    document.getElementById("update_quantity").value = parseInt(item.cells[5].textContent)
+    document.getElementById("update_type").value = item.cells[6].textContent
+    if (item.cells[7].textContent == "Yes") {
+        document.getElementById("update_isMagic").checked = true
+    } else {
+        document.getElementById("update_isMagic").checked = false
+    }
+    if (item_href != null) {
+        document.getElementById("update_href").value = item_href.href
+    } else {
+        document.getElementById("update_href").value = ""
+    }
+
+    document.getElementById("update_item_form").action += id
+
+    show("update_item", true)
 }
