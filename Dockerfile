@@ -6,6 +6,7 @@ WORKDIR /app/bag
 COPY bag_of_holding.py .
 COPY migrate.py .
 COPY requirements.txt .
+COPY models models
 COPY static static
 COPY templates templates
 
