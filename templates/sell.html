@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div class="sidenav">
+    <div class="row center">
+        <img src="../static/img/{{ 'bag.webp'|getenv('BAG_ICON') }}" class="avatar">
+    </div>
+    <div class="row start">
+        <a href="/"><b>Bag</b></a>
+    </div>
+</div>
+
+<div class="content">
+    <!-- Navigation -->
+    <div class="navbar row">
+        <div class="col-2">
+        </div>
+        <div class="col-6 center">
+            <h1>Bag Of Holding</h1>
+        </div>
+        <div class="col-2 end">
+            <form action="/logout" >
+                <button type="submit" name="logout">Log Out</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bag statistics -->
+    <table class="noHover">
+        <tr>
+            <th>
+                <i class='fas fa-coins'></i>
+                Party Gold
+                <i class='clickable far fa-edit' onclick="show('update_coins', true)"></i>
+            </th>
+            <th>
+                <i class='fas fa-funnel-dollar'></i>
+                Items Value
+            </th>
+            <th>
+                <i class='fas fa-weight-hanging'></i>
+                Items Weight
+            </th>
+        </tr>
+        <tr>
+            <td>{{ "{:,.1f}".format(party_gold) }} g</td>
+            <td>{{ "{:,.1f}".format(items_value) }} g</td>
+            <td>{{ "{:,.1f}".format(items_weight) }} lb</td>
+        </tr>
+    </table>
+
+    <!-- Buttons and search bar -->
+    <div class="row">
+        <div class="col-1 center">
+                <button type="button" onclick="bulk_sell_item()">Sell</button>
+        </div>
+        <div class="col-1 center">
+            <form class="start" action="/" method="GET">
+                <button type="submit">Cancel</button>
+            </form>
+        </div>
+        <div class="col-8 end">
+            <span class="search fas fa-search"></span>
+            <input class="search" type="text" id="searchItem" onkeyup="searchItem()" onfocusout="checkFocus()">
+        </div>
+    </div>
+
+    <!-- Bag Items -->
+    <table id="itemTable">
+        <tr class="noHover">
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Price</th>
+            <th>Weight</th>
+            <th>Quantity</th>
+            <th>Type</th>
+            <th>Magic Item</th>
+            <th>Actions</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            {% if item._href == "" %}
+            <td id="name_{{item._id}}">{{ item._name}}</td>
+            {% else %}
+            <td id="name_{{item._id}}"><a href="{{ item._href }}" target="_blank" rel="external noreferrer nofollow noopener">{{ item._name}}</a></td>
+            {% endif %}
+            <td>{{ item._description }}</td>
+            <td>{{ item._location }}</td>
+            <td id="price_{{item._id}}">{{ "{:,.1f}".format(item._price) }}</td>
+            <td>{{ "{:,.1f}".format(item._weight) }}</td>
+            <td>
+                <input class="sell_form" type="number" id="quantity_{{item._id}}" value="{{ item._quantity }}" onchange="update_checkbox_value({{item._id}})" min="0" max="{{ item._quantity }}">
+            </td>
+            <td>{{ item._type }}</td>
+            <td>{{ item._isMagic }}</td>
+            <td>
+                <input class="checkbox" type="checkbox" name="item_{{item._id}}" id="item_{{item._id}}" value="{{ item._quantity }}" form="sell_items_form">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Popups -->
+    <div class="hidden" id="bulk_sell_item">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Selling</h1>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <table id="sell_table">
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <h4 class="center" id="sell_price_total"></h4>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <div class="col-5 center">
+                                <form class="center" action="/sell" method="POST" id="sell_items_form">
+                                    <button type="submit">Confirm</button>
+                                <form>
+                            </div>
+                            <div class="col-5 center">
+                                <button type="button" onclick="show('bulk_sell_item', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

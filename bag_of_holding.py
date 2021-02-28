@@ -106,6 +106,49 @@ def update_item(id):
     except Exception as e:
         raise
 
+@app.route("/sell", methods = ["GET", "POST"])
+def sell_index():
+    if flask.request.method == "GET":
+        if flask.session.get("logged_in"):
+            items = Item.query.order_by(Item._name).all()
+            items_value = _getValue(items)
+            items_weight = _getWeight(items)
+
+            coins = Coin.query.order_by(Coin._value).all()
+            party_gold = _convertDefault(coins)
+
+            return flask.render_template("sell.html",
+                                         items=items,
+                                         items_value=items_value,
+                                         items_weight=items_weight,
+                                         party_gold=party_gold,
+                                         coins=coins)
+        else:
+            return flask.redirect("/login")
+    else:
+        gold = Coin.query.filter_by(_name="Gold").first()
+
+        try:
+            for item_id in flask.request.form.keys():
+                id = item_id.split("_")[1]
+
+                item = Item.query.get_or_404(id)
+
+                quantity_to_sell = int(flask.request.form[item_id])
+
+                gold._quantity += item._price * quantity_to_sell
+                item._quantity -= quantity_to_sell
+
+                if item._quantity <= 0:
+                    db.session.delete(item)
+
+            db.session.commit()
+
+            return flask.redirect("/")
+
+        except Exception as e:
+            raise
+
 @app.route("/sell/<int:id>", methods=["POST"])
 def sell_item(id):
     try:

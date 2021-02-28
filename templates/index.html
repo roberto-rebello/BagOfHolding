@@ -15,6 +15,7 @@
 </div>
 
 <div class="content">
+    <!-- Navigation -->
     <div class="navbar row">
         <div class="col-2">
         </div>
@@ -29,6 +30,8 @@
     </div>
 
     {% if items|length < 1 %}
+
+    <!-- Empty bag -->
     <h4>Such Empty...</h4>
     <img src="{{ url_for('static', filename='img/tumbleweed.gif') }}" alt="Tumbleweed">
     <div class="row center">
@@ -36,7 +39,10 @@
             <button type="submit" name="create" onclick="show('add_item', true)">Add Item</button>
         </div>
     </div>
+
     {% else %}
+
+    <!-- Bag statistics -->
     <table class="noHover">
         <tr>
             <th>
@@ -60,15 +66,23 @@
         </tr>
     </table>
 
+    <!-- Buttons and search bar -->
     <div class="row">
+        <div class="col-1 center">
+            <form class="start" action="/sell" method="GET">
+                <button type="submit">Sell Items</button>
+            </form>
+        </div>
         <div class="col-1 center">
             <button type="submit" name="create" onclick="show('add_item', true)">Add Item</button>
         </div>
-        <div class="col-9 end">
+        <div class="col-8 end">
             <span class="search fas fa-search"></span>
             <input class="search" type="text" id="searchItem" onkeyup="searchItem()" onfocusout="checkFocus()">
         </div>
     </div>
+
+    <!-- Bag Items -->
     <table id="itemTable">
         <tr class="noHover">
             <th>Name</th>
@@ -119,6 +133,7 @@
         {% endfor %}
     </table>
 
+    <!-- Popups -->
     <div class="hidden" id="update_coins">
         <div class="row center">
             <div class="col center pop animate">

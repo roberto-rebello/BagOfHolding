@@ -121,6 +121,12 @@ a {
     cursor: pointer;
 }
 
+input.sell_form {
+    margin: 5px 2px 5px;
+    padding: 3px 2px;
+    width: 96px;
+}
+
 input.checkbox {
     width: auto;
     margin: auto 0px;

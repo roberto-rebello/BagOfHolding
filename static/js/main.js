@@ -94,3 +94,76 @@ function delete_item(id) {
 
     show("delete_item", true)
 }
+
+function update_checkbox_value(id) {
+    document.getElementById("item_" + id).value = document.getElementById("quantity_" + id).value
+}
+
+function bulk_sell_item() {
+
+    var sell_table = document.getElementById("sell_table");
+    sell_table.innerHTML = ""   // Certify that table is empty
+    var form = document.forms["sell_items_form"]
+
+    var sell_total = 0
+    var quantity_total = 0
+
+    for (var item of form) {
+
+        if (!item.checked) {
+            continue
+        }
+
+        var id = item.name.split("_")[1]
+
+        var row = sell_table.insertRow()
+
+        // Adding quantity
+        var quantity = document.getElementById("quantity_" + id).valueAsNumber
+        var cell = row.insertCell()
+        var text = document.createTextNode(quantity)
+        cell.appendChild(text)
+
+        // Adding name
+        var name = document.getElementById("name_" + id).textContent
+        cell = row.insertCell()
+        text = document.createTextNode(name)
+        cell.appendChild(text)
+
+        // Adding price
+        var price = document.getElementById("price_" + id).textContent
+        cell = row.insertCell()
+        text = document.createTextNode(price)
+        cell.appendChild(text)
+
+        quantity_total += quantity
+        sell_total += (quantity * parseFloat(price.replace(",", "")))
+    }
+
+    if (quantity_total > 0) {
+
+        // Creating table header
+        var head = sell_table.createTHead()
+        var row = head.insertRow()
+
+        var th = document.createElement("th")
+        var text = document.createTextNode("Quantity")
+        th.appendChild(text)
+        row.appendChild(th)
+
+        th = document.createElement("th")
+        text = document.createTextNode("Item")
+        th.appendChild(text)
+        row.appendChild(th)
+
+        th = document.createElement("th")
+        text = document.createTextNode("Price / Unit")
+        th.appendChild(text)
+        row.appendChild(th)
+
+        document.getElementById("sell_price_total").textContent = "Selling " + quantity_total + " items for a total of: " + Intl.NumberFormat('en-IN').format(sell_total) + " g"
+
+        show("bulk_sell_item", true)
+
+    }
+}
