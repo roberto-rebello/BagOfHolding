@@ -1,6 +1,8 @@
 import os
 import flask
 
+from flask import request
+
 from models import db
 from models.coin import Coin
 from models.item import Item
@@ -69,6 +71,11 @@ def create_item():
     try:
         db.session.add(new_item)
         db.session.commit()
+
+        no_redirect = request.args.get('noRedirect', False)
+        if (no_redirect):
+            return ('Created', 201)
+
         return flask.redirect("/")
 
     except Exception as e:
