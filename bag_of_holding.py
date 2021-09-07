@@ -247,6 +247,41 @@ def update_coin():
     except Exception as e:
         raise
 
+## JOURNAL
+# Create a new journal
+@app.route("/journal/create", methods=["POST"])
+def create_journal():
+    new_journal = Journal(flask.request.form["author"],
+                          flask.request.form["title"],
+                          flask.request.form["is_private"])
+
+    try:
+        db.session.add(new_journal)
+        db.session.commit()
+        return flask.redirect("/")
+
+    except Exception as e:
+        raise
+
+# Create a new journal entry
+@app.route("/journal/<int:id>", methods=["POST"])
+def create_entry(id):
+    new_entry = Entry(flask.request.form["author"],
+                      flask.request.form["title"],
+                      flask.request.form["body"],
+                      flask.request.form["game_date"],
+                      flask.request.form["location"],
+                      flask.request.form["image"],
+                      id)
+
+    try:
+        db.session.add(new_entry)
+        db.session.commit()
+        return flask.redirect("/")
+
+    except Exception as e:
+        raise
+
 ## PRIVATE FUNCTIONS
 # Get total value of items
 def _getValue(items):
