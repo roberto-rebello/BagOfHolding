@@ -11,12 +11,16 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db/bag.db'
 app.secret_key = os.urandom(24)
 db.init_app(app)
 
-# Custom Jinja filter
+# Custom Jinja filter to get environment variable
 def get_env(default, env):
     return os.getenv(env, default)
 
+# Add custom filter to Jinja
 app.jinja_env.filters["getenv"] = get_env
 
+### ROUTES
+## ITEMS
+# Simple login page
 @app.route("/login", methods = ["POST", "GET"])
 def login():
     if flask.request.method == "POST":
@@ -30,11 +34,13 @@ def login():
     else:
         return flask.render_template("login.html")
 
+# Simple logout
 @app.route("/logout")
 def logout():
     flask.session["logged_in"] = False
     return flask.redirect("/")
 
+# Load main window
 @app.route("/", methods = ["GET"])
 def index():
     if flask.session.get("logged_in"):
@@ -54,6 +60,7 @@ def index():
     else:
         return flask.redirect("/login")
 
+# Create a new item
 @app.route("/create", methods=["POST"])
 def create_item():
     new_item = Item(flask.request.form["name"],
@@ -74,6 +81,7 @@ def create_item():
     except Exception as e:
         raise
 
+# Remove an item
 @app.route("/delete/<int:id>", methods=["POST"])
 def delete_item(id):
     item = Item.query.get_or_404(id)
@@ -86,6 +94,7 @@ def delete_item(id):
     except Exception as e:
         raise
 
+# Update item information
 @app.route("/update/<int:id>", methods=["POST"])
 def update_item(id):
     item = Item.query.get_or_404(id)
@@ -106,8 +115,10 @@ def update_item(id):
     except Exception as e:
         raise
 
+# Load multi-sell page
 @app.route("/sell", methods = ["GET", "POST"])
 def sell_index():
+    # Query all items and load selling page
     if flask.request.method == "GET":
         if flask.session.get("logged_in"):
             items = Item.query.order_by(Item._name).all()
@@ -125,6 +136,7 @@ def sell_index():
                                          coins=coins)
         else:
             return flask.redirect("/login")
+    # Recieves items to be sold, delete or subtract quantity and add total gold to party coins
     else:
         gold = Coin.query.filter_by(_name="Gold").first()
 
@@ -149,6 +161,7 @@ def sell_index():
         except Exception as e:
             raise
 
+# Sell an item
 @app.route("/sell/<int:id>", methods=["POST"])
 def sell_item(id):
     try:
@@ -169,6 +182,7 @@ def sell_item(id):
     except Exception as e:
         raise
 
+# Create a copy of an item
 @app.route("/copy/<int:id>")
 def copy_item(id):
     item = Item.query.get_or_404(id)
@@ -190,6 +204,7 @@ def copy_item(id):
     except Exception as e:
         raise
 
+# Increase quantity of an item
 @app.route("/add/<int:id>")
 def add_item(id):
     item = Item.query.get_or_404(id)
@@ -202,6 +217,7 @@ def add_item(id):
     except Exception as e:
         raise
 
+# Decrease quantity of an item
 @app.route("/subtract/<int:id>")
 def subtract(id):
     item = Item.query.get_or_404(id)
@@ -214,6 +230,7 @@ def subtract(id):
     except Exception as e:
         raise
 
+# Update coin quantity
 @app.route("/coin", methods=["POST"])
 def update_coin():
     coins = Coin.query.order_by(Coin._value).all()
@@ -230,6 +247,8 @@ def update_coin():
     except Exception as e:
         raise
 
+## PRIVATE FUNCTIONS
+# Get total value of items
 def _getValue(items):
     total_value = 0.0
     for item in items:
@@ -237,6 +256,7 @@ def _getValue(items):
 
     return round(total_value, 1)
 
+# Get total weight of items
 def _getWeight(items):
     total_weight = 0.0
     for item in items:
@@ -244,6 +264,7 @@ def _getWeight(items):
 
     return round(total_weight, 1)
 
+# Convert coins to defaut value
 def _convertDefault(coins, default="Gold"):
     default_value = Coin.query.filter_by(_name=default).first()._value
 
