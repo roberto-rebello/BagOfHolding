@@ -1,5 +1,9 @@
 function show(id, show) {
-    document.getElementById(id).classList.toggle("hidden", !show);
+    if (show != null) {
+        document.getElementById(id).classList.toggle("hidden", !show);
+    } else {
+        document.getElementById(id).classList.toggle("hidden");
+    }
 }
 
 function checkFocus() {
@@ -166,4 +170,8 @@ function bulk_sell_item() {
         show("bulk_sell_item", true)
 
     }
+}
+
+function toggle_class(id, target) {
+    document.getElementById(id).classList.toggle(target);
 }

@@ -1,5 +1,5 @@
 html {
-    background: url("../img/parchment.jpg");
+    background: url("/static/img/parchment.jpg");
     scrollbar-color: #782e22 #111;
 }
 
@@ -309,11 +309,26 @@ input:focus.search, input.search.notEmpty {
 }
 
 .pop-content {
-    background: url("../img/parchment.jpg");
+    background: url("/static/img/parchment.jpg");
     margin: 10% auto auto auto;
     border: 5px solid #888;
     padding-bottom: 20px;
     width: 40%;
+}
+
+/* Journal Entry page */
+.entry {
+  background: url("/static/img/parchment.jpg");
+  margin: 5% auto 5% auto;
+  border: 1px solid black;
+}
+
+.entry-header {
+  background: #50505050;
+}
+
+.entry-content {
+  background: url("/static/img/parchment.jpg");
 }
 
 /* Login page */
@@ -330,7 +345,7 @@ input:focus.search, input.search.notEmpty {
 }
 
 .login-content {
-    background: url("../img/parchment.jpg");
+    background: url("/static/img/parchment.jpg");
     margin: 5% auto auto auto;
     border: 5px solid #888;
     width: 30%;
