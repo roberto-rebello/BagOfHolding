@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div class="sidenav">
+    <div class="row center">
+        <img src="/static/img/{{ 'bag.webp'|getenv('BAG_ICON') }}" class="avatar">
+    </div>
+    <div class="row start">
+        <a href="/"><b>Bag</b></a>
+        <a href="/journal"><b>Journals</b></a>
+    </div>
+</div>
+
+<div class="content">
+    <!-- Navigation -->
+    <div class="navbar row">
+        <div class="col-2">
+        </div>
+        <div class="col-6 center">
+            <h1>{{ user }}'s Journals</h1>
+        </div>
+        <div class="col-2 end">
+            <form action="/logout" >
+                <button type="submit" name="logout">Log Out</button>
+            </form>
+        </div>
+    </div>
+
+    {% if journals|length < 1 %}
+
+    <!-- Empty journals -->
+    <h4>Such Empty...</h4>
+    <img src="{{ url_for('static', filename='img/tumbleweed.gif') }}" alt="Tumbleweed">
+    <div class="row center">
+        <div class="col-1 center">
+            <button type="submit" name="create" onclick="show('create_journal', true)">Create Journal</button>
+        </div>
+    </div>
+
+    {% else %}
+
+    <!-- Buttons -->
+    <div class="row">
+        <div class="col-1 center">
+            <button type="submit" name="create" onclick="show('create_journal', true)">Create Journal</button>
+        </div>
+    </div>
+
+    <!-- Existing Journals -->
+    <table id="journalTable">
+        <tr class="noHover">
+            <th>Title</th>
+            <th>Author</th>
+            <th>Private</th>
+        </tr>
+        {% for journal in journals %}
+        <tr id="journal_{{journal._id}}">
+            <td id="journal_{{journal._id}}_title"><a id="journal_{{journal._id}}_entries" href="/journal/{{ journal._id }}" target="_self" rel="external noreferrer nofollow noopener">{{ journal._title }}</a></td>
+            <td id="journal_{{journal._id}}_author">{{ journal._author }}</td>
+            <td id="journal_{{journal._id}}_is_private">{{ journal._is_private }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Popups -->
+    <!-- TODO -->
+
+    {% endif %}
+
+    <div class="hidden" id="create_journal">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Create a Journal</h1>
+                    <div class="row center" style="margin-bottom: 10px">
+                        <div class="col-6 center">
+                            <div class="col-5 start">
+                                <label for="add_isPrivate"><b>Private: </b></label>
+                                <input class="checkbox" type="checkbox" name="is_private" id="add_isPrivate" value="Yes" form="create_journal_form">
+                                <input type="hidden" name="is_private" id="add_isNotPrivate" value="No" form="create_journal_form">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <form class="start" action="/journal/create" method="POST" id="create_journal_form">
+                                <label for="add_author"><b>Author: </b></label>
+                                <input type="text" name="author" id="add_author" placeholder="Author name" required>
+                                <label for="add_title"><b>Title: </b></label>
+                                <input type="text" name="title" id="add_title" placeholder="Journal title">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <div class="col-5 center">
+                                <button type="submit" form="create_journal_form">Create Journal</button>
+                            </div>
+                            <div class="col-5 center">
+                                <button type="submit" onclick="show('create_journal', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
