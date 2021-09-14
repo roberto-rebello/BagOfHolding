@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<div class="sidenav">
+    <div class="row center">
+        <img src="/static/img/{{ 'bag.webp'|getenv('BAG_ICON') }}" class="avatar">
+    </div>
+    <div class="row start">
+        <a href="/"><b>Bag</b></a>
+        <a href="/journal"><b>Journals</b></a>
+    </div>
+</div>
+
+<div class="content">
+    <!-- Navigation -->
+    <div class="navbar row">
+        <div class="col-2">
+        </div>
+        <div class="col-6 center">
+            <h1>{{ user }}'s Journals</h1>
+        </div>
+        <div class="col-2 end">
+            <form action="/logout" >
+                <button type="submit" name="logout">Log Out</button>
+            </form>
+        </div>
+    </div>
+    <!-- Journal Title -->
+    <div class="navbar row">
+        <div class="col-2">
+        </div>
+        <div class="col-6 center">
+            <h2>{{ journal._title }}</h2>
+        </div>
+        <div class="col-2 end">
+        </div>
+    </div>
+
+    {% if entries|length < 1 %}
+
+    <!-- Empty journals -->
+    <h4>Such Empty...</h4>
+    <img src="{{ url_for('static', filename='img/tumbleweed.gif') }}" alt="Tumbleweed">
+    <div class="row center">
+        <div class="col-1 center">
+            <button type="submit" name="create" onclick="show('create_entry', true)">Add a new Entry</button>
+        </div>
+    </div>
+
+    {% else %}
+
+    <!-- Buttons -->
+    <div class="row">
+        <div class="col-1 center">
+            <button type="submit" name="create" onclick="show('create_entry', true)">Add a new Entry</button>
+        </div>
+    </div>
+
+    <!-- Existing Journal Entries -->
+    {% for entry in entries %}
+    <div class="row col-8 entry">
+        <div class="row col entry-header">
+          <div class="clickable col-1 center" onclick="show('entry_{{ entry._id }}_body'); toggle_class('entry_{{ entry._id }}_show', 'fa-angle-down'); toggle_class('entry_{{ entry._id }}_show', 'fa-angle-up')">
+              <i id="entry_{{ entry._id }}_show" class="fas fa-angle-down"></i>
+          </div>
+          <div class="col-2 start" id="entry_{{ entry._id }}_title">
+              <p>{{ entry._title }}</p>
+          </div>
+          <div class="col-4">
+          </div>
+          <div class="col-2 end" id="entry_{{ entry._id }}_game_date">
+              <p>{{ entry._game_date }}</p>
+          </div>
+          <div class="col-1 center" id="entry_{{ entry._id }}_title">
+              <a href="/journal/{{ journal._id }}/entry/{{ entry._id }}"><i class="clickable far fa-edit"></i></a>
+          </div>
+      </div>
+        <div class="row col">
+          <div class="row col center entry-content">
+            <p class="hidden" id="entry_{{ entry._id }}_body">{{ entry._body }}</p>
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Popups -->
+    <!-- TODO -->
+
+    {% endif %}
+
+    <div class="hidden" id="create_entry">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">New Entry</h1>
+                    <div class="row center">
+                        <div class="col-3 center">
+                            <label for="add_author"><b>Author: </b></label>
+                            <input type="text" name="author" id="add_author" value={{ journal._author }} form="create_journal_entry_form" required>
+                        </div>
+                        <div class="col-3 center">
+                            <label for="add_game_date"><b>Date: </b></label>
+                            <input type="date" name="game_date" id="add_game_date" placeholder="Date" form="create_journal_entry_form">
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-3 center">
+                            <label for="add_location"><b>Location: </b></label>
+                            <input type="text" name="location" id="add_location" placeholder="Entry location" form="create_journal_entry_form" required>
+                        </div>
+                        <div class="col-3 center">
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <label for="add_title"><b>Title: </b></label>
+                            <input type="text" name="title" id="add_title" placeholder="Entry title" form="create_journal_entry_form">
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <input type="text" name="body" id="add_body" placeholder="Type" form="create_journal_entry_form" required>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <form class="start" action="/journal/{{ journal._id }}" method="POST" id="create_journal_entry_form">
+                                <div class="col-5 center">
+                                    <button type="submit">Add new Entry</button>
+                                </div>
+                                <div class="col-5 center">
+                                    <button type="submit" onclick="show('create_journal', false)">Cancel</button>
+                                </div>
+                            <form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
