@@ -33,6 +33,7 @@ class Entry(db.Model):
     _journal = db.relationship("Journal", backref=db.backref("entries", lazy=True))
     _journal_id = db.Column(db.Integer, db.ForeignKey("journal._id"), nullable=False)
     _creation_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    _edit_date = db.Column(db.DateTime, nullable=True)
 
     def __init__(self, journal, author, title="", body="", game_date="", location="", **kwargs):
         super(Entry, self).__init__(**kwargs)
