@@ -12,6 +12,23 @@ body {
     padding-bottom: 20px;
 }
 
+p {
+    width: 100%;
+    padding: 1%;
+    margin: auto;
+}
+
+pre {
+    width: 100%;
+    padding: 1%;
+    margin: auto;
+    overflow: clip;
+}
+
+div {
+    width: inherit;
+}
+
 table {
     width: 100%;
     margin-left: auto;
@@ -44,6 +61,23 @@ label {
     margin-bottom: 5px;
     margin-top: 5px;
     font-size: 24px;
+}
+
+textarea {
+    background-color: #50505030;
+    width: 100%;
+}
+
+.textbox {
+    background-color: #50505030;
+    height: 300px;
+    width: 100%;
+    margin: 5px 0px 10px;
+    padding: 12px 20px;
+    border: 2px inset lightgray;
+    display: inline-block;
+    box-sizing: border-box;
+    overflow: auto;
 }
 
 input {
@@ -91,14 +125,14 @@ a {
 }
 
 .sidenav {
-  height: 100%;
-  width: 300px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #50505050;
-  overflow-x: hidden;
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #50505050;
+    overflow-x: hidden;
 }
 
 .sidenav a {
@@ -110,7 +144,7 @@ a {
 }
 
 .content {
-  margin-left: 300px;
+    margin-left: 300px;
 }
 
 .hidden {
@@ -164,6 +198,7 @@ input:focus.search, input.search.notEmpty {
 
 /* Flexbox */
 .row {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -329,6 +364,11 @@ input:focus.search, input.search.notEmpty {
 
 .entry-content {
   background: url("/static/img/parchment.jpg");
+}
+
+.entry-meta {
+  font-size: x-small;
+  color: dimgrey;
 }
 
 /* Login page */
