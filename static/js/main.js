@@ -175,3 +175,12 @@ function bulk_sell_item() {
 function toggle_class(id, target) {
     document.getElementById(id).classList.toggle(target);
 }
+
+function delete_entry(id) {
+
+    document.getElementById("delete_title").textContent = document.getElementById("entry_" + id + "_title").innerText
+
+    document.getElementById("delete_entry_form").action += id + "/delete"
+
+    show("delete_entry", true)
+}
