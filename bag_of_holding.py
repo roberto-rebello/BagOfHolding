@@ -1,9 +1,11 @@
 import os
 import flask
+from datetime import datetime
 
 from models import db
 from models.coin import Coin
 from models.item import Item
+from models.journal import Journal, Entry
 
 app = flask.Flask(__name__)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -18,6 +20,15 @@ def get_env(default, env):
 # Add custom filter to Jinja
 app.jinja_env.filters["getenv"] = get_env
 
+# Custom filter for date format
+@app.template_filter()
+def date_format(datetime):
+    return datetime.strftime("%d %b %Y")
+
+@app.template_filter()
+def datetime_format(datetime):
+    return datetime.strftime("%d %b %Y, %H:%M")
+
 ### ROUTES
 ## ITEMS
 # Simple login page
@@ -26,6 +37,7 @@ def login():
     if flask.request.method == "POST":
         if flask.request.form["user"] == os.getenv("BAG_USER", "admin") and flask.request.form["pass"] == os.getenv("BAG_PASS", "admin"):
             flask.session["logged_in"] = True
+            flask.session["user"] = flask.request.form["user"]
             return flask.redirect("/")
         else:
             error = "Invalid credentials"
@@ -38,6 +50,7 @@ def login():
 @app.route("/logout")
 def logout():
     flask.session["logged_in"] = False
+    flask.session["user"] = ""
     return flask.redirect("/")
 
 # Load main window
@@ -248,39 +261,151 @@ def update_coin():
         raise
 
 ## JOURNAL
-# Create a new journal
-@app.route("/journal/create", methods=["POST"])
-def create_journal():
-    new_journal = Journal(flask.request.form["author"],
-                          flask.request.form["title"],
-                          flask.request.form["is_private"])
+# Load and Create Journals
+@app.route("/journal", methods=["GET", "POST"])
+def get_journals():
+    if flask.session.get("logged_in"):
+        if flask.request.method == "GET":
+            journals = list(Journal.query.filter((Journal._user==flask.session.get("user")) | (Journal._is_private==False)))
 
-    try:
-        db.session.add(new_journal)
-        db.session.commit()
-        return flask.redirect("/")
+            return flask.render_template("journal.html",
+                                         journals = journals,
+                                         user = flask.session.get("user"))
 
-    except Exception as e:
-        raise
+        elif flask.request.method == "POST":
+            new_journal = Journal(flask.request.form["author"],
+                                  flask.request.form["title"],
+                                  flask.request.form["is_private"]=="Yes",
+                                  flask.session.get("user"))
 
-# Create a new journal entry
-@app.route("/journal/<int:id>", methods=["POST"])
+            try:
+                db.session.add(new_journal)
+                db.session.commit()
+                return flask.redirect("/journal")
+
+            except Exception as e:
+                raise
+
+    else:
+        return flask.redirect("/login")
+
+# Acess or Create a new journal entry
+@app.route("/journal/<int:id>", methods=["GET", "POST"])
+def get_entries(id):
+    if flask.session.get("logged_in"):
+        journal = Journal.query.get_or_404(id)
+        entries = journal.entries
+
+        if flask.request.method == "GET":
+            return flask.render_template("entries.html",
+                                         journal = journal,
+                                         entries = entries,
+                                         user = flask.session.get("user"))
+
+        elif flask.request.method == "POST":
+            new_entry = Entry(journal,
+                              flask.request.form["author"],
+                              flask.request.form["title"],
+                              flask.request.form["body"],
+                              flask.request.form["game_date"],
+                              flask.request.form["location"])
+
+            try:
+                db.session.commit()
+                return flask.redirect("/journal/{}".format(id))
+
+            except Exception as e:
+                raise
+    else:
+        return flask.redirect("/login")
+
+# Create a journal entry
+@app.route("/journal/<int:id>/entry", methods=["GET", "POST"])
 def create_entry(id):
-    new_entry = Entry(flask.request.form["author"],
-                      flask.request.form["title"],
-                      flask.request.form["body"],
-                      flask.request.form["game_date"],
-                      flask.request.form["location"],
-                      flask.request.form["image"],
-                      id)
+    if flask.session.get("logged_in"):
+        journal = Journal.query.get_or_404(id)
 
-    try:
-        db.session.add(new_entry)
-        db.session.commit()
-        return flask.redirect("/")
+        if flask.request.method == "GET":
+            entry = Entry(journal, "", "", "", "", "")
 
-    except Exception as e:
-        raise
+            return flask.render_template("entry.html",
+                                         journal = journal,
+                                         entry = entry,
+                                         user = flask.session.get("user"))
+
+        elif flask.request.method == "POST":
+            entry = Entry(journal,
+                          flask.request.form["author"],
+                          flask.request.form["title"],
+                          flask.request.form["body"],
+                          flask.request.form["game_date"],
+                          flask.request.form["location"])
+
+            try:
+                db.session.commit()
+                return flask.redirect("/journal/{}".format(id))
+
+            except Exception as e:
+                raise
+    else:
+        return flask.redirect("/login")
+
+# Acess or Edit a journal entry
+@app.route("/journal/<int:id>/entry/<int:entry_id>", methods=["GET", "POST"])
+def update_entry(id, entry_id):
+    if flask.session.get("logged_in"):
+        journal = Journal.query.get_or_404(id)
+        entry = Entry.query.get_or_404(entry_id)
+
+        if flask.request.method == "GET":
+            return flask.render_template("entry.html",
+                                         journal = journal,
+                                         entry = entry,
+                                         user = flask.session.get("user"))
+
+        elif flask.request.method == "POST":
+            entry._author = flask.request.form["author"]
+            entry._title = flask.request.form["title"]
+            entry._body = flask.request.form["body"]
+            entry._game_date = flask.request.form["game_date"]
+            entry._location = flask.request.form["location"]
+            entry._edit_date = datetime.utcnow()
+
+            try:
+                db.session.commit()
+                return flask.redirect("/journal/{}".format(id))
+
+            except Exception as e:
+                raise
+    else:
+        return flask.redirect("/login")
+
+# Acess or Edit a journal entry
+@app.route("/journal/<int:id>/entry/<int:entry_id>/delete", methods=["POST"])
+def delete_entry(id, entry_id):
+    if flask.session.get("logged_in"):
+        entry = Entry.query.get_or_404(entry_id)
+
+        try:
+            return_url = "/journal/{}".format(id)
+
+            db.session.delete(entry)
+
+            journal = Journal.query.get_or_404(id)
+            if len(journal.entries) == 0:
+                db.session.delete(journal)
+                return_url = "/journal"
+
+            db.session.commit()
+
+            return flask.redirect(return_url)
+
+        except Exception as e:
+            raise
+
+    else:
+        return flask.redirect("/login")
+
 
 ## PRIVATE FUNCTIONS
 # Get total value of items
