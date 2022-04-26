@@ -1,10 +1,12 @@
 import os
 import flask
+from hashlib import sha512
 from datetime import datetime
 
 from flask import request
 
 from models import db
+from models.user import User
 from models.coin import Coin
 from models.item import Item
 from models.journal import Journal, Entry
@@ -32,16 +34,36 @@ def datetime_format(datetime):
     return datetime.strftime("%d %b %Y, %H:%M")
 
 ### ROUTES
-## ITEMS
+## GENERAL
 # Simple login page
 @app.route("/login", methods = ["POST", "GET"])
 def login():
     if flask.request.method == "POST":
-        if flask.request.form["user"] == os.getenv("BAG_USER", "admin") and flask.request.form["pass"] == os.getenv("BAG_PASS", "admin"):
+
+        valid_login = False
+
+        username  = flask.request.form["user"]
+        password  = flask.request.form["pass"]
+
+        user  = User.query.filter_by(_username=username).first()
+
+        if username == os.getenv("BAG_USER", "admin") and password == os.getenv("BAG_PASS", "admin"):
+            flask.session["is_admin"] = True
+            valid_login = True
+        elif (user is not None) and (user._password == sha512(password.encode("utf-8")).hexdigest()):
+            flask.session["is_admin"] = False
+            valid_login = True
+        else:
+            valid_login = False
+
+        if valid_login:
             flask.session["logged_in"] = True
             flask.session["user"] = flask.request.form["user"]
             return flask.redirect("/")
         else:
+            flask.session["is_admin"] = False
+            flask.session["logged_in"] = False
+            flask.session["user"] = ""
             error = "Invalid credentials"
             return flask.render_template("login.html", error=error)
 
@@ -51,6 +73,7 @@ def login():
 # Simple logout
 @app.route("/logout")
 def logout():
+    flask.session["is_admin"] = False
     flask.session["logged_in"] = False
     flask.session["user"] = ""
     return flask.redirect("/")
