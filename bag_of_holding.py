@@ -98,6 +98,67 @@ def index():
     else:
         return flask.redirect("/login")
 
+## USERS
+# List all current Users
+@app.route("/users", methods=["GET"])
+def get_users():
+    if flask.session.get("logged_in"):
+        users = User.query.order_by(User._id).all()
+
+        return flask.render_template("users.html",
+                                     admin=flask.session["is_admin"])
+
+# Create a new User
+@app.route("/users", methods=["POST"])
+def create_user():
+    if flask.session.get("logged_in"):
+        username = flask.request.form["username"].lower()
+        password = sha512(flask.request.form["password"].encode("utf-8")).hexdigest()
+
+        new_user = User(username, password)
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+
+            return flaks.redirect("/users")
+
+        except Exception as e:
+            raise
+
+# Delete a User
+@app.route("/users/<int:id>", methods=["POST"])
+def delete_user(id):
+    if flask.session.get("logged_in"):
+        user = User.query.get_or_404(id)
+
+        try:
+            db.session.delete(user)
+            db.session.commit()
+
+            return flask.redirect("/users")
+
+        except Exception as e:
+            raise
+
+# Change user password
+@app.route("/users/<int:id>/password", methods=["POST"])
+def change_password(id):
+    if flask.session.get("logged_in"):
+        new_password = sha512(flask.request.form["password"].encode("utf-8")).hexdigest()
+
+        user = User.query.get_or_404(id)
+        user._password = new_password
+
+        try:
+            db.session.commit()
+
+            return flask.redirect("/users")
+
+        except Exception as e:
+            raise
+
+## ITEMS
 # Create a new item
 @app.route("/create", methods=["POST"])
 def create_item():
