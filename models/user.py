@@ -6,7 +6,7 @@ class User(db.Model):
     _password = db.Column(db.String(128), nullable = False)
     _isAdmin  = db.Column(db.String(3), default = "No")
 
-    def __init__(self, username, password, is_admin, **kwargs):
+    def __init__(self, username, password, is_admin = False, **kwargs):
         super(User, self).__init__(**kwargs)
         self._username = username
         self._password = password
