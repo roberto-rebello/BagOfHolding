@@ -19,6 +19,9 @@
         {% block head %}{% endblock %}
     </head>
     <body>
+
+        {% if not login_page %}
+
         <div class="sidenav">
           <div class="row center">
             <img src="/static/img/{{ 'bag.webp'|getenv('BAG_ICON') }}" class="avatar">
@@ -63,6 +66,9 @@
 
             </div>
         </div>
+
+        {% endif %}
+
         {% block body %}{% endblock %}
     </body>
 </html>

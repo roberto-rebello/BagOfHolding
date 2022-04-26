@@ -65,10 +65,10 @@ def login():
             flask.session["logged_in"] = False
             flask.session["user"] = ""
             error = "Invalid credentials"
-            return flask.render_template("login.html", error=error)
+            return flask.render_template("login.html", error=error, login_page=True)
 
     else:
-        return flask.render_template("login.html")
+        return flask.render_template("login.html", login_page=True)
 
 # Simple logout
 @app.route("/logout")
