@@ -46,12 +46,11 @@ def login():
         password  = flask.request.form["pass"]
 
         user  = User.query.filter_by(_username=username).first()
-
-        if username == os.getenv("BAG_USER", "admin") and password == os.getenv("BAG_PASS", "admin"):
-            flask.session["is_admin"] = True
-            valid_login = True
-        elif (user is not None) and (user._password == sha512(password.encode("utf-8")).hexdigest()):
+        
+        if (user is not None) and (user._password == sha512(password.encode("utf-8")).hexdigest()):
             flask.session["is_admin"] = False
+            if user._isAdmin:
+                flask.session["is_admin"] = True
             valid_login = True
         else:
             valid_login = False
