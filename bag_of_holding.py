@@ -115,8 +115,9 @@ def create_user():
     if flask.session.get("logged_in"):
         username = flask.request.form["username"].lower()
         password = sha512(flask.request.form["password"].encode("utf-8")).hexdigest()
+        is_admin = flask.request.form["isAdmin"],
 
-        new_user = User(username, password)
+        new_user = User(username, password, is_admin)
 
         try:
             db.session.add(new_user)
