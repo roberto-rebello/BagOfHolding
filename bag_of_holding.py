@@ -94,7 +94,8 @@ def index():
                                      items_value=items_value,
                                      items_weight=items_weight,
                                      party_gold=party_gold,
-                                     coins=coins)
+                                     coins=coins,
+                                     admin=flask.session["is_admin"])
     else:
         return flask.redirect("/login")
 
@@ -237,7 +238,8 @@ def sell_index():
                                          items_value=items_value,
                                          items_weight=items_weight,
                                          party_gold=party_gold,
-                                         coins=coins)
+                                         coins=coins,
+                                         admin=flask.session["is_admin"])
         else:
             return flask.redirect("/login")
     # Recieves items to be sold, delete or subtract quantity and add total gold to party coins
@@ -361,7 +363,8 @@ def get_journals():
 
             return flask.render_template("journal.html",
                                          journals = journals,
-                                         user = flask.session.get("user"))
+                                         user = flask.session.get("user"),
+                                         admin=flask.session["is_admin"])
 
         elif flask.request.method == "POST":
             new_journal = Journal(flask.request.form["author"],
@@ -391,7 +394,8 @@ def get_entries(id):
             return flask.render_template("entries.html",
                                          journal = journal,
                                          entries = entries,
-                                         user = flask.session.get("user"))
+                                         user = flask.session.get("user"),
+                                         admin=flask.session["is_admin"])
 
         elif flask.request.method == "POST":
             new_entry = Entry(journal,
@@ -422,7 +426,8 @@ def create_entry(id):
             return flask.render_template("entry.html",
                                          journal = journal,
                                          entry = entry,
-                                         user = flask.session.get("user"))
+                                         user = flask.session.get("user"),
+                                         admin=flask.session["is_admin"])
 
         elif flask.request.method == "POST":
             entry = Entry(journal,
@@ -452,7 +457,8 @@ def update_entry(id, entry_id):
             return flask.render_template("entry.html",
                                          journal = journal,
                                          entry = entry,
-                                         user = flask.session.get("user"))
+                                         user = flask.session.get("user"),
+                                         admin=flask.session["is_admin"])
 
         elif flask.request.method == "POST":
             entry._author = flask.request.form["author"]

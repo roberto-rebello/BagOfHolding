@@ -19,6 +19,50 @@
         {% block head %}{% endblock %}
     </head>
     <body>
+        <div class="sidenav">
+          <div class="row center">
+            <img src="/static/img/{{ 'bag.webp'|getenv('BAG_ICON') }}" class="avatar">
+          </div>
+          <div class="row start">
+            <a href="/"><b>Bag</b></a>
+            <a href="/journal"><b>Journals</b></a>
+          </div>
+          {% block sidenav %}{% endblock %}
+        </div>
+        <div class="content">
+            <!-- Navigation -->
+            <div class="navbar row">
+                <div class="col-2">
+                </div>
+                <div class="col-6 center">
+                    {% block navbar_title %}{% endblock %}
+                </div>
+
+                {% if admin %}
+
+                <div class="col-1 center">
+                    <form action="/users" method="GET">
+                        <button type="submit" name="users">Users</button>
+                    </form>
+                </div>
+                <div class="col-1 center">
+                  <form action="/logout" >
+                      <button type="submit" name="logout">Log Out</button>
+                  </form>
+                </div>
+
+                {% else %}
+
+                <div class="col-2 center">
+                  <form action="/logout" >
+                      <button type="submit" name="logout">Log Out</button>
+                  </form>
+                </div>
+
+                {% endif %}
+
+            </div>
+        </div>
         {% block body %}{% endblock %}
     </body>
 </html>
