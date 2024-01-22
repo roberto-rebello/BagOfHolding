@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block sidenav %}
+{% endblock %}
+
+{% block navbar_title %}
+<h1>Users</h1>
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+
+    <!-- Buttons -->
+    <div class="row">
+        <div class="col-1 center">
+            <button style="margin-bottom: 14px" type="submit" name="create" onclick="show('create_user', true)">Create User</button>
+        </div>
+    </div>
+
+    <!-- Existing Users -->
+    <table id="userTable">
+        <tr class="noHover">
+            <th>ID</th>
+            <th>User</th>
+            <th>Admin</th>
+            <th>Actions</th>
+        </tr>
+        {% for user in users %}
+        <tr id="user_{{user._id}}">
+            <td id="user_{{user._id}}_id">{{ user._id }}</td>
+            <td id="user_{{user._id}}_username">{{ user._username }}</td>
+            <td id="user_{{user._id}}_isAdmin">{{ user._isAdmin }}</td>
+            <td>
+                <i class='clickable far fa-edit' onclick="update_user({{user._id}})"></i>
+                <i class='clickable far fa-trash-alt' onclick="delete_user({{user._id}})"></i>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Popups -->
+
+    <div class="hidden" id="create_user">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Create a User</h1>
+                    <div class="row center" style="margin-bottom: 10px">
+                        <div class="col-6 center">
+                            <div class="col-5 start">
+                                <label for="add_isAdmin"><b>Admin: </b></label>
+                                <input class="checkbox" type="checkbox" name="isAdmin" id="add_isAdmin" value="Yes" form="create_user_form">
+                                <input type="hidden" name="isAdmin" id="add_isNotAdmin" value="No" form="create_user_form">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <form class="start" action="/users" method="POST" id="create_user_form">
+                                <label for="add_username"><b>Username: </b></label>
+                                <input type="text" name="username" id="add_username" placeholder="Username" required>
+                                <label for="add_password"><b>Password: </b></label>
+                                <input type="text" name="password" id="add_password" placeholder="Password">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <div class="col-5 center">
+                                <button type="submit" form="create_user_form">Create User</button>
+                            </div>
+                            <div class="col-5 center">
+                                <button type="submit" onclick="show('create_user', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden" id="update_user">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Update User Information</h1>
+                    <div class="row center" style="margin-bottom: 10px">
+                        <div class="col-6 center">
+                            <div class="col-5 start">
+                                <label for="update_isAdmin"><b>Admin: </b></label>
+                                <input class="checkbox" type="checkbox" name="isAdmin" id="update_isAdmin" value="Yes" form="update_user_form">
+                                <input type="hidden" name="isAdmin" id="update_isNotAdmin" value="No" form="update_user_form">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <form class="start" action="/users/update/" method="POST" id="update_user_form">
+                                <label for="update_username"><b>Username: </b></label>
+                                <input type="text" name="username" id="update_username" placeholder="Username" required>
+                                <label for="update_password"><b>Password: </b></label>
+                                <input type="text" name="password" id="update_password" placeholder="Password">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <div class="col-5 center">
+                                <button type="submit" form="update_user_form">Update User</button>
+                            </div>
+                            <div class="col-5 center">
+                                <button type="submit" onclick="show('update_user', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden" id="delete_user">
+        <div class="row center">
+            <div class="col center pop animate">
+                <div class="pop-content">
+                    <h1 class="center">Deleting</h1>
+                    <h2 class="center" id="delete_name"></h2>
+                    <h4 class="center">Are you sure you what to do this?</h4>
+                    <h5 class="center">This action is irreversible</h5>
+                    <div class="row center">
+                        <div class="col-6 center">
+                            <div class="col-5 center">
+                                <form class="start" action="/users/delete/" method="POST" id="delete_user_form">
+                                    <button type="submit" form="delete_user_form">Delete</button>
+                                </form>
+                            </div>
+                            <div class="col-5 center">
+                                <button type="submit" onclick="show('delete_user', false)">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock %}

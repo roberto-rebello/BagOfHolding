@@ -46,7 +46,7 @@ function update_item(id) {
 
     var item = document.getElementById("item_" + id)
     var item_href = document.getElementById("item_" + id + "_href")
-    var item_isMagic = document.getElementById("item_" + id + "_isMagic")
+    var item_isMagic = document.getElementById("item_" + id + "_isMagic").textContent
 
     document.getElementById("update_name").value = item.cells[0].textContent
     document.getElementById("update_description").value = item.cells[1].textContent
@@ -55,7 +55,7 @@ function update_item(id) {
     document.getElementById("update_weight").value = parseFloat(item.cells[4].textContent.replace(",",""))
     document.getElementById("update_quantity").value = parseInt(item.cells[5].textContent)
     document.getElementById("update_type").value = item.cells[6].textContent
-    if (item.cells[7].textContent == "Yes") {
+    if (item_isMagic == "Yes") {
         document.getElementById("update_isMagic").checked = true
     } else {
         document.getElementById("update_isMagic").checked = false
@@ -77,7 +77,7 @@ function sell_item(id) {
     var item_quantity = parseInt(item.cells[5].textContent)
 
     document.getElementById("sell_name").textContent = item.cells[0].textContent
-    document.getElementById("sell_available").textContent = "Available units: " + parseInt(item.cells[5].textContent)
+    document.getElementById("sell_available").textContent = "Available units: " + item_quantity
     document.getElementById("sell_price").textContent = "Price per unit: " + item.cells[3].textContent + " g"
 
     document.getElementById("sell_quantity").max = parseInt(item.cells[5].textContent)
@@ -90,7 +90,6 @@ function sell_item(id) {
 function delete_item(id) {
 
     var item = document.getElementById("item_" + id)
-    var item_quantity = parseInt(item.cells[5].textContent)
 
     document.getElementById("delete_name").textContent = item.cells[0].textContent
 
@@ -183,4 +182,32 @@ function delete_entry(id) {
     document.getElementById("delete_entry_form").action += id + "/delete"
 
     show("delete_entry", true)
+}
+
+function update_user(id) {
+
+    var user = document.getElementById("user_" + id)
+    var user_isAdmin = document.getElementById("user_" + id + "_isAdmin").textContent
+
+    document.getElementById("update_username").value = user.cells[1].textContent
+    if (user_isAdmin == "True") {
+        document.getElementById("update_isAdmin").checked = true
+    } else {
+        document.getElementById("update_isAdmin").checked = false
+    }
+
+    document.getElementById("update_user_form").action = "/users/update/" + id
+
+    show("update_user", true)
+}
+
+function delete_user(id) {
+
+    var user = document.getElementById("user_" + id)
+
+    document.getElementById("delete_name").textContent = user.cells[1].textContent
+
+    document.getElementById("delete_user_form").action = "/users/delete/" + id
+
+    show("delete_user", true)
 }

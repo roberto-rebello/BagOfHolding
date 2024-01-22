@@ -106,6 +106,7 @@ def get_users():
         users = User.query.order_by(User._id).all()
 
         return flask.render_template("users.html",
+                                     users=users,
                                      admin=flask.session["is_admin"])
 
 # Create a new User
@@ -114,7 +115,7 @@ def create_user():
     if flask.session.get("logged_in"):
         username = flask.request.form["username"].lower()
         password = sha512(flask.request.form["password"].encode("utf-8")).hexdigest()
-        is_admin = flask.request.form["isAdmin"],
+        is_admin = flask.request.form["isAdmin"] == "Yes"
 
         new_user = User(username, password, is_admin)
 
@@ -122,13 +123,29 @@ def create_user():
             db.session.add(new_user)
             db.session.commit()
 
-            return flaks.redirect("/users")
+            return flask.redirect("/users")
 
         except Exception as e:
             raise
 
+# Update item information
+@app.route("/users/update/<int:id>", methods=["POST"])
+def update_user(id):
+    user = User.query.get_or_404(id)
+
+    user._username = flask.request.form["username"]
+    if flask.request.form["password"] != "":
+        user._password = sha512(flask.request.form["password"].encode("utf-8")).hexdigest()
+    user._isAdmin = flask.request.form["isAdmin"] == "Yes"
+
+    try:
+        db.session.commit()
+        return flask.redirect("/users")
+    except Exception as e:
+        raise
+
 # Delete a User
-@app.route("/users/<int:id>", methods=["POST"])
+@app.route("/users/delete/<int:id>", methods=["POST"])
 def delete_user(id):
     if flask.session.get("logged_in"):
         user = User.query.get_or_404(id)
