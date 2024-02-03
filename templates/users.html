@@ -7,12 +7,18 @@
 {% endblock %}
 
 {% block navbar_title %}
+{% if admin %}
 <h1>Users</h1>
+{% else %}
+<h1 class="center">Edit User Information</h1>
+{% endif %}
 {% endblock %}
 
 {% block body %}
 
 <div class="content">
+
+    {% if admin %}
 
     <!-- Buttons -->
     <div class="row">
@@ -147,7 +153,25 @@
         </div>
     </div>
 
+    {% else %}
 
+    <div class="row center">
+        <div class="col-6 center">
+            <form class="start" action="/users/update/{{ user_id }}" method="POST" id="update_user_form">
+                <label for="update_username"><b>Username: </b></label>
+                <input type="text" name="username" id="update_username" placeholder="Username" value="{{ logged_user }}" required>
+                <label for="update_password"><b>Password: </b></label>
+                <input type="text" name="password" id="update_password" placeholder="Password" required>
+            </form>
+        </div>
+    </div>
+    <div class="row center">
+        <div class="col-6 center">
+            <button type="submit" form="update_user_form">Update</button>
+        </div>
+    </div>
+
+    {% endif %}
 
 </div>
 {% endblock %}
