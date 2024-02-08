@@ -13,19 +13,6 @@
 {% block body %}
 <div class="content">
 
-    {% if items|length < 1 %}
-
-    <!-- Empty bag -->
-    <h4>Such Empty...</h4>
-    <img src="{{ url_for('static', filename='img/tumbleweed.gif') }}" alt="Tumbleweed">
-    <div class="row center">
-        <div class="col-1 center">
-            <button type="submit" name="create" onclick="show('add_item', true)">Add Item</button>
-        </div>
-    </div>
-
-    {% else %}
-
     <!-- Bag statistics -->
     <table class="noHover">
         <tr>
@@ -49,6 +36,19 @@
             <td>{{ "{:,.1f}".format(items_weight) }} lb</td>
         </tr>
     </table>
+
+    {% if items|length < 1 %}
+
+    <!-- Empty bag -->
+    <h4>Such Empty...</h4>
+    <img src="{{ url_for('static', filename='img/tumbleweed.gif') }}" alt="Tumbleweed">
+    <div class="row center">
+        <div class="col-1 center">
+            <button type="submit" name="create" onclick="show('add_item', true)">Add Item</button>
+        </div>
+    </div>
+
+    {% else %}
 
     <!-- Buttons and search bar -->
     <div class="row">
