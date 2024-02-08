@@ -48,21 +48,22 @@
                         <button type="submit" name="users">Users</button>
                     </form>
                 </div>
+
+                {% else %}
+
+                <div class="col-1 center">
+                  <form action="/users" method="GET">
+                      <button type="submit" name="users">Edit User</button>
+                  </form>
+              </div>
+
+                {% endif %}
+
                 <div class="col-1 center">
                   <form action="/logout" >
                       <button type="submit" name="logout">Log Out</button>
                   </form>
                 </div>
-
-                {% else %}
-
-                <div class="col-2 center">
-                  <form action="/logout" >
-                      <button type="submit" name="logout">Log Out</button>
-                  </form>
-                </div>
-
-                {% endif %}
 
             </div>
         </div>

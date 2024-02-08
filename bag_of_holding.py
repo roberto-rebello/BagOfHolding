@@ -48,16 +48,13 @@ def login():
         user  = User.query.filter_by(_username=username).first()
         
         if (user is not None) and (user._password == sha512(password.encode("utf-8")).hexdigest()):
-            flask.session["is_admin"] = False
-            if user._isAdmin:
-                flask.session["is_admin"] = True
             valid_login = True
-        else:
-            valid_login = False
+            flask.session["is_admin"] = user._isAdmin
 
         if valid_login:
             flask.session["logged_in"] = True
-            flask.session["user"] = flask.request.form["user"]
+            flask.session["user"] = user._username
+            flask.session["user_id"] = user._id
             return flask.redirect("/")
         else:
             flask.session["is_admin"] = False
@@ -107,6 +104,8 @@ def get_users():
 
         return flask.render_template("users.html",
                                      users=users,
+                                     logged_user=flask.session.get("user"),
+                                     user_id=flask.session.get("user_id"),
                                      admin=flask.session["is_admin"])
 
 # Create a new User
@@ -136,7 +135,10 @@ def update_user(id):
     user._username = flask.request.form["username"]
     if flask.request.form["password"] != "":
         user._password = sha512(flask.request.form["password"].encode("utf-8")).hexdigest()
-    user._isAdmin = flask.request.form["isAdmin"] == "Yes"
+    try:
+        user._isAdmin = flask.request.form["isAdmin"] == "Yes"
+    except:
+        user._isAdmin = False
 
     try:
         db.session.commit()
